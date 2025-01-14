@@ -17,6 +17,9 @@ urlpatterns = [
     
         
     # ----------------------------- authentication -----------------------------
-    
-    path("registration/", student_register, name="student-register"),
+    # ----------- student authentication section ----------- 
+    path("registration/", studentRegister, name="studentRegister"),
+    path("studentlogin/",studentLogin,name="studentLogin"),
+    path("studentlogout/",studentLogout,name="studentLogout"),
+    path("studentprofilesettings",studentProfileSettings,name="studentProfileSetting")
 ]

@@ -1,4 +1,7 @@
 from django import forms
+from django.forms import ModelForm
+
+from .models import StudentProfile
 
 # Create forms here
 
@@ -19,13 +22,25 @@ class StudentRegistrationForm(forms.Form):
     confirm_password = forms.CharField(widget=forms.PasswordInput)
     
     
-class StudentProfileForm(forms.Form):
+class StudentProfileForm(forms.ModelForm):
     # Create student profile form filed here
-    profile_img = forms.ImageField(label="Profile Images", widget=forms.FileInput(attrs={'class':'form-control'}))
-    date_of_birth = forms.DateField(label="Dte of Birth", widget=forms.DateInput)
-    gender = forms.ChoiceField(label = "Gender", choices=gender, widget=forms.RadioSelect)
-    phone_number = forms.IntegerField(label="Phone Number", widget=forms.NumberInput(attrs={'class': 'from-control', 'id':'phone', 'type':'tel'}))
-    address = forms.CharField()
+    class Meta:
+        model = StudentProfile
+        fields = ("profile_img", "date_of_birth", "gender", "phone_number", "address")
+        widget = {
+            "profile_img" : forms.FileInput(attrs={'class' : 'form-control'}),
+            "date_of_birth" : forms.DateInput(attrs={'class' : 'form-control'}),
+            "gender" : forms.TextInput(attrs={'class' : 'form-control'}),
+            "phone_number" : forms.NumberInput(attrs={'class' : 'form-control'}),
+            "address" : forms.TextInput(attrs={'class' : 'form-control'}),
+        }
+
+    
+    
+class StudentLoginForm(forms.Form):
+    # Create student login form here
+    username = forms.CharField(label="Username", widget=forms.TextInput(attrs={'class':'form-control'}))
+    password = forms.CharField(label="Password", widget=forms.PasswordInput(attrs={'class':'form-control'}))
 
     
     

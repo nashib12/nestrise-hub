@@ -4,7 +4,9 @@
 {% endblock title %}
 
 {% block content %}
-  <h1>{{request.username}}</h1>
-  <a href="{% url 'student-register' %}"><button type="btn btn-primary btn-lg">Register</button></a>
+  <h1>{{user.username}}</h1>
+  <a href="{% url 'studentRegister' %}"><button type="btn btn-primary btn-lg">Register</button></a>
+  <a href="{% url 'studentLogin' %}"><button type="btn btn-primary btn-lg">Student login</button></a>
+  <a href="{% url 'studentLogout' %}"><button type="btn btn-primary btn-lg">Logout</button></a>
 
 {% endblock content %}

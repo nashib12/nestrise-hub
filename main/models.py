@@ -29,3 +29,14 @@ class StudentProfile(models.Model):
     # get the username from the currently logged in userid
     def __str__(self):
         return self.user.username
+    
+    def clean_phone_number(self):
+        data = self.cleaned_data['phone_number']
+        # Remove any non-numeric characters
+        cleaned_number = ''.join(filter(str.isdigit, data))
+
+        # Validate phone number length (e.g., 10 digits for US numbers)
+        if len(cleaned_number) < 10 or len(cleaned_number) > 15:
+            raise models.ValidationError("Enter a valid phone number.")
+        
+        return cleaned_number

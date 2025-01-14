@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NestRise Hub | Student Login</title>
+    <title>NestRise Hub | Student Registration</title>
 
     <!-- Favicon icon link -->
     <link rel="icon" type="images/png" href="../static/images/logo.png">
@@ -23,14 +23,18 @@
     <section>
         <div class="container p-5">
             <div class="row">
-                <form action="{% url 'studentLogin' %}" method="post">
+                <form action="{% url 'studentProfileSetting' %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
-
+                
                     {{form}}
 
                     <input type="submit">
                 </form>
             </div>
+            {% for item in student_data  %}
+                <img src="{{item.profile_img.url}}" alt="">
+            {% endfor %}
+            <a href="{% url 'studentLogout' %}"><button type="btn btn-primary btn-lg">Logout</button></a>
         </div>
     </section>
 
