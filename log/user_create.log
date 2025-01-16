@@ -2,3 +2,5 @@
 2025-01-13 20:26:53,177 - main.views - INFO - Create user with the username:grg57nashib successfully.
 2025-01-13 20:30:28,466 - main.views - INFO - Create user with the username:grg57nashib successfully.
 2025-01-14 19:28:24,875 - main.views - INFO - Create user with the username:grg57nashib successfully.
+2025-01-15 12:48:25,789 - main.views - INFO - Create user with the username:tester123 successfully.
+2025-01-15 12:51:30,669 - main.views - ERROR - 'PhoneNumber' object has no attribute 'find'

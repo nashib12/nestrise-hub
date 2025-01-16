@@ -1,0 +1,35 @@
+2025-01-15 08:21:36,068 - main.views - ERROR - _path_normpath: path should be string, bytes or os.PathLike, not list
+2025-01-15 08:27:16,969 - main.views - ERROR - _path_normpath: path should be string, bytes or os.PathLike, not list
+2025-01-15 08:29:18,066 - main.views - ERROR - BaseModelForm.__init__() got an unexpected keyword argument 'isinstance'
+2025-01-15 08:45:22,202 - main.views - ERROR - _path_normpath: path should be string, bytes or os.PathLike, not list
+2025-01-15 09:31:48,707 - main.views - ERROR - _path_normpath: path should be string, bytes or os.PathLike, not list
+2025-01-15 09:35:21,609 - main.views - ERROR - _path_normpath: path should be string, bytes or os.PathLike, not list
+2025-01-15 09:38:41,631 - main.views - ERROR - _path_normpath: path should be string, bytes or os.PathLike, not list
+2025-01-15 09:39:18,000 - main.views - ERROR - _path_normpath: path should be string, bytes or os.PathLike, not list
+2025-01-15 09:39:18,000 - main.views - ERROR - _path_normpath: path should be string, bytes or os.PathLike, not list
+2025-01-15 09:44:48,286 - main.views - ERROR - _path_normpath: path should be string, bytes or os.PathLike, not list
+2025-01-15 09:52:21,821 - main.views - ERROR - _path_normpath: path should be string, bytes or os.PathLike, not list
+2025-01-15 09:53:25,126 - main.views - ERROR - _path_normpath: path should be string, bytes or os.PathLike, not list
+2025-01-15 09:55:31,678 - main.views - ERROR - _path_normpath: path should be string, bytes or os.PathLike, not list
+2025-01-15 09:58:05,347 - main.views - ERROR - _path_normpath: path should be string, bytes or os.PathLike, not list
+2025-01-15 10:14:21,963 - main.views - ERROR - _path_normpath: path should be string, bytes or os.PathLike, not list
+2025-01-15 11:51:11,653 - main.views - ERROR - _path_normpath: path should be string, bytes or os.PathLike, not list
+2025-01-15 11:52:36,864 - main.views - ERROR - _path_normpath: path should be string, bytes or os.PathLike, not list
+2025-01-15 11:54:29,228 - main.views - ERROR - _path_normpath: path should be string, bytes or os.PathLike, not list
+2025-01-15 11:55:29,710 - main.views - ERROR - _path_normpath: path should be string, bytes or os.PathLike, not list
+2025-01-15 12:33:29,783 - main.views - ERROR - 'StudentProfileForm' object has no attribute 'request'
+2025-01-15 12:33:47,655 - main.views - ERROR - 'StudentProfileForm' object has no attribute 'request'
+2025-01-15 12:33:47,655 - main.views - ERROR - 'StudentProfileForm' object has no attribute 'request'
+2025-01-15 12:35:31,267 - main.views - ERROR - 'StudentProfileForm' object has no attribute 'request'
+2025-01-15 12:45:11,551 - main.views - ERROR - 'PhoneNumber' object has no attribute 'find'
+2025-01-15 12:45:32,858 - main.views - ERROR - 'PhoneNumber' object has no attribute 'find'
+2025-01-15 12:45:32,858 - main.views - ERROR - 'PhoneNumber' object has no attribute 'find'
+2025-01-15 12:46:09,610 - main.views - ERROR - 'PhoneNumber' object has no attribute 'find'
+2025-01-15 12:46:09,610 - main.views - ERROR - 'PhoneNumber' object has no attribute 'find'
+2025-01-15 12:46:09,610 - main.views - ERROR - 'PhoneNumber' object has no attribute 'find'
+2025-01-15 12:47:31,724 - main.views - ERROR - 'PhoneNumber' object has no attribute 'find'
+2025-01-15 12:48:25,789 - main.views - INFO - Create user with the username:tester123 successfully.
+2025-01-15 12:51:30,669 - main.views - ERROR - 'PhoneNumber' object has no attribute 'find'
+2025-01-15 12:51:30,669 - main.views - ERROR - 'PhoneNumber' object has no attribute 'find'
+2025-01-15 13:02:23,274 - main.views - ERROR - 'PhoneNumber' object has no attribute 'find'
+2025-01-15 13:10:53,168 - main.views - ERROR - {'phone_number': ['Enter a valid phone number for Nepal.']}

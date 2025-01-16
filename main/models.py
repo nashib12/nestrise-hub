@@ -1,12 +1,19 @@
+import phonenumbers
+
 from django.db import models
 from django.contrib.auth import get_user_model
 from phonenumber_field.modelfields import PhoneNumberField
+from django.core.exceptions import ValidationError
 
 # Create your models here.
 
 # Get the user id of currently logged in user
 User = get_user_model()
-
+gender_field = (
+    ("Male", "Male"),
+    ("Female", "Female"),
+    ("Other", "Other")
+)
 
 class StudentProfile(models.Model):
     # create student profile models here
@@ -16,8 +23,8 @@ class StudentProfile(models.Model):
     id_user = models.IntegerField()
     profile_img = models.ImageField(upload_to="student profile img", default="../static/images/profile-white.jpg")
     date_of_birth = models.DateField(null=True)
-    gender = models.CharField(max_length=100, null=True)
-    phone_number = PhoneNumberField(null=True)
+    gender = models.CharField(max_length=100, null=True, choices=gender_field)
+    phone_number = models.CharField(max_length=15, null=True)
     address = models.CharField(max_length=200, null=True)
     
     class Meta:
@@ -31,12 +38,15 @@ class StudentProfile(models.Model):
         return self.user.username
     
     def clean_phone_number(self):
-        data = self.cleaned_data['phone_number']
-        # Remove any non-numeric characters
-        cleaned_number = ''.join(filter(str.isdigit, data))
+        # Validate phone number for the Nepal region
+        if self.phone_number:
+            try:
+                parsed_number = phonenumbers.parse(self.phone_number, "NP") 
+                if not phonenumbers.is_valid_number(parsed_number):
+                    raise ValidationError({"phone_number": "Enter a valid phone number for Nepal."})
+            except phonenumbers.NumberParseException:
+                raise ValidationError({"phone_number": "Enter a valid phone number format."})
 
-        # Validate phone number length (e.g., 10 digits for US numbers)
-        if len(cleaned_number) < 10 or len(cleaned_number) > 15:
-            raise models.ValidationError("Enter a valid phone number.")
-        
-        return cleaned_number
+    def save(self, *args, **kwargs):
+        self.clean_phone_number()
+        super().save()

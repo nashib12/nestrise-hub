@@ -57,21 +57,21 @@ def studentRegister(request):
                     handler.setFormatter(formatter)
                     logger.addHandler(handler)
                     logger.info(f"Create user with the username:{username} successfully.")
-                    
-                    # Log user in and redirect to user profile creation page
-                    user_login = authenticate(username=username, password=password)
-                    login(request, user_login)
-                    
-                    
+                                  
                     # Create a user model object for current user
                     user_model = User.objects.get(username=username)
-                    user_login = StudentProfile.objects.create(user=user_model, id_user=user_model.id)
-                    user_login.save()
+                    student_profile = StudentProfile.objects.create(user=user_model, id_user=user_model.id)
+                    student_profile.save()
                     
                     return redirect("studentLogin")
-                
+                # create a logger for the excepted error during password validation
                 except ValidationError as e:
-                    pass
+                    handler = logging.FileHandler("./log/validation_error.log")
+                    formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+                    handler.setFormatter(formatter)
+                    logger.addHandler(handler)
+                    logger.info(e)
+                    
     return render(request, "./authentication/student-register.html", {"form" : form})
 
 #login the student and redirect to main page
@@ -85,15 +85,16 @@ def studentLogin(request):
             username = form.cleaned_data["username"]
             password = form.cleaned_data["password"]
 
-    
+            # check the existence of input username
             if not User.objects.filter(username=username).exists():
                 return redirect("studentlogin")
             
             user_login = authenticate(username=username, password=password)
             
+            # Login after successfully checking the user  
             if user_login is not None:
                 login(request, user_login)
-                return redirect("studentProfileSetting")
+                return redirect("home")
     return render(request, "./authentication/student-login.html", {"form":form})
 
 #student logout 
@@ -103,24 +104,31 @@ def studentLogout(request):
                        
 #Update student profile after successfuly creating student profile
 @login_required(login_url="studentLogin")
-def studentProfileSettings(request):
-    form = StudentProfileForm()
-    student_data = StudentProfile.objects.filter(user=request.user)
-    
-    if request.method == "POST":
-        data = StudentProfile.objects.get(user=request.user)
-        form = StudentProfileForm(request.POST, request.FILES, instance=request.user)
-        
-        if form.is_valid():
-            
-                form.save()
-                return redirect("studentProfileSetting")
-                
+def studentProfileSetting(request, id):
+    student_data = StudentProfile.objects.get(id=id)
+    form = StudentProfileForm(instance=student_data)
+
     context ={
         "form" : form,
-        "student_data" : student_data
+        "student_data" : student_data,
     }
     
     return render(request, "./authentication/student-profile-settings.html", context)
     
-    
+#Update student profile and save it to database
+def updateStudentProfile(request, id):
+    student_data = StudentProfile.objects.get(id=id)
+    try:
+        if request.method == "POST":
+            form = StudentProfileForm(request.POST, request.FILES, instance=student_data)
+            # Update the student profile if data is valid
+            if form.is_valid():
+                form.save()
+                return redirect("home")
+    except Exception as e:
+        handler = logging.FileHandler("./log/student_profile.log")
+        formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+        handler.setFormatter(formatter)
+        logger.addHandler(handler)
+        logger.error(str(e))
+        return redirect("home")

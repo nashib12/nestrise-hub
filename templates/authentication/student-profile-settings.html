@@ -19,11 +19,11 @@
 
 </head>
 <body>
-    
+    <h1>Student Profile settings | {{user.username}}</h1>
     <section>
         <div class="container p-5">
             <div class="row">
-                <form action="{% url 'studentProfileSetting' %}" method="post" enctype="multipart/form-data">
+                <form action="{% url 'studentProfileUpdate' user.id %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                 
                     {{form}}
@@ -31,9 +31,6 @@
                     <input type="submit">
                 </form>
             </div>
-            {% for item in student_data  %}
-                <img src="{{item.profile_img.url}}" alt="">
-            {% endfor %}
             <a href="{% url 'studentLogout' %}"><button type="btn btn-primary btn-lg">Logout</button></a>
         </div>
     </section>

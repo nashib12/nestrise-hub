@@ -6,11 +6,6 @@ from .models import StudentProfile
 # Create forms here
 
 # Choices for gender field
-gender = (
-    ("Male", "Male"),
-    ("Female", "Female"),
-    ("Other", "Other")
-)
 
 class StudentRegistrationForm(forms.Form):
     #Create student registration form field
@@ -30,12 +25,10 @@ class StudentProfileForm(forms.ModelForm):
         widget = {
             "profile_img" : forms.FileInput(attrs={'class' : 'form-control'}),
             "date_of_birth" : forms.DateInput(attrs={'class' : 'form-control'}),
-            "gender" : forms.TextInput(attrs={'class' : 'form-control'}),
-            "phone_number" : forms.NumberInput(attrs={'class' : 'form-control'}),
+            "gender" : forms.RadioSelect(attrs={'class' : 'form-control'}),
+            "phone_number" : forms.NumberInput(attrs={'class' : 'form-control', 'type':'tel', 'id':'phone'}),
             "address" : forms.TextInput(attrs={'class' : 'form-control'}),
         }
-
-    
     
 class StudentLoginForm(forms.Form):
     # Create student login form here
