@@ -37,8 +37,9 @@ class CollegeProfileForm(forms.ModelForm):
     # Create college profile form here
     class Meta:
         model = CollegeProfile
-        fields = ("college_profile_img" , "phone_number", "address", "websites")
+        fields = ("established_date", "college_profile_img" , "phone_number", "address", "websites")
         widget = {
+            "established_date": forms.DateInput(attrs={'class':'from-control'}),
             "college_profile_img" : forms.FileInput(attrs={'class':'form-control'}) , 
             "phone_number" : forms.NumberInput(attrs={'class':'from-control'}), 
             "address" : forms.TextInput(attrs={'class':'form-control'}), 

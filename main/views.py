@@ -10,6 +10,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 
 from .models import *
 from .forms import *
+from .decorators import allowed_users
 
 # get the logger name 
 logger = logging.getLogger(__name__)
@@ -55,7 +56,7 @@ def studentRegister(request):
                         return redirect("studentRegister")
                 
                     User.objects.create_user(first_name=first_name, last_name=last_name, username=username, email=email, password=password)
-                    Group.objects.create
+                    
                     logging.basicConfig(level=logging.INFO)
                     handler = logging.FileHandler("./log/user_create.log")
                     formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
@@ -65,6 +66,8 @@ def studentRegister(request):
                                   
                     # Create a user model object for current user
                     user_model = User.objects.get(username=username)
+                    group = Group.objects.get(name="STUDENT")
+                    user_model.groups.add(group)
                     student_profile = StudentProfile.objects.create(user=user_model, id_user=user_model.id)
                     student_profile.save()
                     
@@ -104,12 +107,14 @@ def studentLogin(request):
 
 #student logout 
 @login_required(login_url="studentLogin")
+@allowed_users(allowed_roles=["STUDENT"])
 def studentLogout(request):
     logout(request)
     return redirect("studentLogin")
                        
 #Update student profile after successfuly creating student profile
 @login_required(login_url="studentLogin")
+@allowed_users(allowed_roles=["STUDENT"])
 def studentProfileSetting(request, id):
     student_data = StudentProfile.objects.get(user_id=id)
     form = StudentProfileForm(instance=student_data)
@@ -123,6 +128,7 @@ def studentProfileSetting(request, id):
     
 #Update student profile and save it to database
 @login_required(login_url="studentLogin")
+@allowed_users(allowed_roles=["STUDENT"])
 def updateStudentProfile(request, id):
     student_data = StudentProfile.objects.get(user_id=id)
     try:
@@ -142,6 +148,7 @@ def updateStudentProfile(request, id):
     
 #change the password for student
 @login_required(login_url="studentLogin")
+@allowed_users(allowed_roles=["STUDENT"])
 def change_password_student(request):
     form = PasswordChangeForm(user=request.user)
     
@@ -187,7 +194,8 @@ def collegeRegister(request):
                         # messages.error(request, "Email already exists!!")
                         return redirect("collegeRegister")
                 
-                    User.objects.create_user(username=username, email=email, password=password)
+                    user = User.objects.create_user(username=username, email=email, password=password)
+
                     logging.basicConfig(level=logging.INFO)
                     handler = logging.FileHandler("./log/college_create.log")
                     formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
@@ -197,6 +205,8 @@ def collegeRegister(request):
                                   
                     # Create a user model object for current user
                     user_model = User.objects.get(username=username)
+                    group = Group.objects.get(name="COLLEGE")
+                    user_model.groups.add(group)
                     college_profile = CollegeProfile.objects.create(college=user_model, id_user=user_model.id)
                     college_profile.save()
                     
@@ -236,12 +246,14 @@ def collegeLogin(request):
 
 #student logout 
 @login_required(login_url="collegeLogin")
+@allowed_users(allowed_roles=["COLLEGE"])
 def collegeLogout(request):
     logout(request)
     return redirect("collegeLogin")
 
 #Update student profile after successfuly creating student profile
 @login_required(login_url="collegeLogin")
+@allowed_users(allowed_roles=["COLLEGE"])
 def collegeProfileSetting(request, id):
     college_data = CollegeProfile.objects.get(college_id=id)
     form = CollegeProfileForm(instance=college_data)
@@ -255,6 +267,7 @@ def collegeProfileSetting(request, id):
     
 #Update student profile and save it to database
 @login_required(login_url="collegeLogin")
+@allowed_users(allowed_roles=["COLLEGE"])
 def updateCollegeProfile(request, id):
     student_data = CollegeProfile.objects.get(college_id=id)
     try:
@@ -274,6 +287,7 @@ def updateCollegeProfile(request, id):
     
 #change the password for college
 @login_required(login_url="collegeLogin")
+@allowed_users(allowed_roles=["COLLEGE"])
 def change_password_college(request):
     form = PasswordChangeForm(user=request.user)
     

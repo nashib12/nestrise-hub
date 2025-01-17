@@ -18,7 +18,7 @@ class StudentProfile(models.Model):
     # create student profile models here
     
     # make a connection with the objects of currently logged in user
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     id_user = models.IntegerField()
     profile_img = models.ImageField(upload_to="student profile img", default="../static/images/profile-white.jpg")
     date_of_birth = models.DateField(null=True)
@@ -54,9 +54,10 @@ class CollegeProfile(models.Model):
     # Create college profile model here
     
     # make connection with the currently logged in user
-    college = models.ForeignKey(User, on_delete=models.CASCADE)
+    college = models.OneToOneField(User, on_delete=models.CASCADE)
     id_user = models.IntegerField()
     college_profile_img = models.ImageField(upload_to="college profile img", default="../static/images/profile-white.jpg")
+    established_date = models.DateField(null=True)
     phone_number = models.CharField(null=True, max_length=15)
     address = models.CharField(max_length=100, null=True)
     websites = models.URLField(null=True, max_length=200)
@@ -85,3 +86,8 @@ class CollegeProfile(models.Model):
     def save(self, *args, **kwargs):
         self.clean_phone_number()
         super().save()
+        
+
+    
+
+    
