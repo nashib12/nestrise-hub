@@ -1,0 +1,8 @@
+2025-01-20 08:18:13,511 - main.views - ERROR - Cannot query "grg57nashib": Must be "User" instance.
+2025-01-25 12:28:33,581 - main.views - ERROR - 'tuple' object has no attribute 'save'
+2025-01-25 12:33:58,855 - main.views - ERROR - 'tuple' object has no attribute 'save'
+2025-01-25 13:08:44,930 - main.views - ERROR - 'SimpleLazyObject' object is not callable
+2025-01-25 13:15:25,524 - main.views - ERROR - Cannot resolve keyword 'user' into field. Choices are: collegeinfo, collegeprofile, date_joined, email, first_name, groups, id, is_active, is_staff, is_superuser, last_login, last_name, logentry, password, studentinfo, studentprofile, user_permissions, username
+2025-01-26 10:45:47,169 - main.views - ERROR - StudentInfo matching query does not exist.
+2025-01-26 10:46:01,207 - main.views - ERROR - StudentInfo matching query does not exist.
+2025-01-26 10:46:01,207 - main.views - ERROR - StudentInfo matching query does not exist.

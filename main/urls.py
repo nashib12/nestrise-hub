@@ -15,7 +15,7 @@ from .views import *
 
 urlpatterns = [
     path("",home,name="home"), 
-    
+    path("studentProfile/", studentProfile, name="studentProfile"),
         
     # ----------------------------- authentication -----------------------------
     path("selection/",selection,name="selection"),
@@ -26,6 +26,8 @@ urlpatterns = [
     path("studentprofilesettings/<int:id>",studentProfileSetting,name="studentProfileSetting"),
     path("studentprofileupdate/<int:id>/",updateStudentProfile,name="studentProfileUpdate"),
     path("change_password_college/", change_password_student, name="changePasswordStudent"),
+    path("eductaionLevel/<int:id>", educationLevel, name="educationLevel"),
+    path("updateEducationLevel/<int:id>/", updateEducationLevel, name="updateEducationLevel"),
     
     # ----------- college authentication section ----------- 
     path("collegeregistration/", collegeRegister, name="collegeRegister"),
@@ -34,11 +36,19 @@ urlpatterns = [
     path("collegeprofilesettings/<int:id>",collegeProfileSetting,name="collegeProfileSetting"),
     path("collegeprofileupdate/<int:id>/",updateCollegeProfile,name="collegeProfileUpdate"),
     path("changepasswordcollege/", change_password_college, name="changePasswordCollege"),
+    path("collegeInfo/<int:id>", collegeInfo, name="collegeInfo"),
+    path("updateCollegeInfo/<int:id>/", updateCollegeInfo, name="updateCollegeInfo"),
 
-    
     # ---------------- password reset section ----------------
     path('password_reset/', auth_views.PasswordResetView.as_view(template_name=""), name='password_reset'),
     path('password_reset_done/', auth_views.PasswordResetDoneView.as_view(template_name=""), name='password_reset_done'),
     path('password_reset_confirm/<uidb64>/<token>/',auth_views.PasswordResetConfirmView.as_view(template_name=""), name='password_reset_confirm'),
     path('password_reset_complete/', auth_views.PasswordResetCompleteView.as_view(template_name=""), name='password_reset_complete'), 
+    
+    # -------------------------------- Apptitiude test section --------------------------------
+    path('test/',categorySelection, name="testCategory"),
+    path('aptitudetest/', aptitudeTest, name="test"),
+    path('result/', testResult, name="result"),
+    path('verbaltest/',verbalReasoningTest, name="verbalTest"),
+    path('verbaltestresult/',verbalTestCheck, name="verbalTestResult")
 ]

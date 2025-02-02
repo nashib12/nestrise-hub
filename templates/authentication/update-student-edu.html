@@ -1,0 +1,16 @@
+{% extends "auth.html" %}
+
+{% block title %}
+  Student education
+{% endblock title %}
+
+{% block content %}
+<h1>Add Education Level | {{user.username}}</h1>
+<section>
+    <div class="container p-5">
+        <div class="row">
+            {% include "./form.html" %}
+        </div>
+    </div>
+</section>
+{% endblock content %}

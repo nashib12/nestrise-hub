@@ -1,0 +1,69 @@
+
+.selection-card {
+    box-sizing: border-box;
+    width: 390px;
+    height: 454px;
+    background: rgba(217, 217, 217, 0.58);
+    border: 1px solid white;
+    box-shadow: 12px 17px 51px rgba(0, 0, 0, 0.22);
+    backdrop-filter: blur(6px);
+    border-radius: 17px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.5s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    font-weight: bolder;
+    color: black;
+  }
+  
+.selection-card:hover {
+    border: 1px solid black;
+  }
+  
+.button-47 {
+    align-items: center;
+    background: #FFFFFF;
+    border: 0 solid #E2E8F0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    box-sizing: border-box;
+    color: #1A202C;
+    display: inline-flex;
+    font-family: Inter, sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    height: 56px;
+    justify-content: center;
+    line-height: 24px;
+    overflow-wrap: break-word;
+    padding: 24px;
+    text-decoration: none;
+    width: 125px;
+    border-radius: 8px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+.cross-mark{
+    position: relative;
+    left: 147px;
+    padding: 0;
+    top: -9px;
+    text-decoration: none;
+    color: black;
+    font-size: 1.9rem;
+}
+
+.cross-mark:hover{
+    font-size: 2.5rem;
+    color: red;
+}
+
+.selection-icon{
+    max-width: 100px;
+    max-height: 100px;
+}

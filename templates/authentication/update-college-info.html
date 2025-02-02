@@ -1,0 +1,22 @@
+{% extends "auth.html" %}
+
+{% block title %}
+  Update college info
+{% endblock title %}
+
+{% block content %}
+<h1>Add College info | {{user.username}}</h1>
+<section>
+    <div class="container p-5">
+        <div class="row">
+            <form action="{% url 'updateCollegeInfo' user.id %}" method="post">
+                {% csrf_token %}
+            
+                {{form}}
+
+                <input type="submit">
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock content %}
