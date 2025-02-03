@@ -24,12 +24,6 @@
                     <h1>LogIn as College</h1>
                     <a href="{% url 'collegeLogin' %}"><button class="button-47">Login</button></a>
                     <a href="{% url 'collegeRegister' %}"><button class="button-47">Register</button></a>
-            
-                    {% if request.user.is_authenticated %}
-                    <a href="{% url 'collegeProfileSetting' user.id %}"><button class="btn btn-secondary btn-lg">Update</button></a>
-                    <a href="{% url 'collegeInfo' user.id %}"><button class="btn btn-secondary btn-lg">Add Info</button></a>
-                    <a href="{% url 'collegeLogout' %}"><button class="btn btn-primary btn-lg">Logout</button></a>
-                    {% endif %}
                 </div>
             </div>
         </div>

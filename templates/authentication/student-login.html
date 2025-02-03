@@ -2,19 +2,43 @@
 {% block title %}
   Student Login
 {% endblock title %}
-
 {% block content %}
-<section>
-    <div class="container p-5">
-        <div class="row">
-            <form action="{% url 'studentLogin' %}" method="post">
-                {% csrf_token %}
-
-                {{form}}
-
-                <input type="submit">
-            </form>
+  <section class="bg-light d-flex align-items-center justify-content-center min-vh-100">
+    <div class="login-container shadow-lg">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="h4 fw-bold">Login</h2>
+            <a href="{% url 'home' %}" class="text-decoration-none"><button class="btn-close btn-close-white"></button></a>
+        </div>
+        <form accept="{% url 'studentLogin' %}" method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="username" class="form-label text-secondary">Username</label>
+                {{ form.username }}
+            </div>
+            <div class="mb-3 position-relative">
+                <label for="password" class="form-label text-secondary">Password</label>
+                {{ form.password }}
+                <i class="fas fa-eye position-absolute" id="togglePassword" style="right: 1rem; top: 2.5rem; color: #a0aec0; cursor: pointer;"></i>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="rememberMe">
+                    <label class="form-check-label text-secondary" for="rememberMe">Remember Me</label>
+                </div>
+                <a href="#" class="text-secondary small">Forgot Password?</a>
+            </div>
+            <button type="submit" class="btn btn-purple w-100 mb-3">Sign in</button>
+        </form>
+        <div class="text-center text-secondary mb-3">Login with social accounts</div>
+        <div class="d-flex justify-content-center mb-4 gap-5 social-icons">
+            <a href="#" class="me-3"><i class="fab fa-google"></i></a>
+            <a href="#" class="me-3"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+        </div>
+        <div class="text-center text-secondary small">
+            Don't have an account? <a href="{% url 'studentRegister' %}" class="text-white">Sign up</a>
         </div>
     </div>
-</section>
+  </section>
+
 {% endblock content %}

@@ -12,6 +12,6 @@ def allowed_users(allowed_roles=[]):
                 if group in allowed_roles:
                     return view_func(request, *args, **kwargs)
                 else:
-                    return HttpResponse("Your are not allowed to login")
+                    return redirect("selection")
         return wrapper_func
     return decorators

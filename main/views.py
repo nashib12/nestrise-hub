@@ -22,8 +22,8 @@ logger = logging.getLogger(__name__)
 
 def home(request):
     # Create landing pages views here
-    return render(request, "main/index.html")
-
+        return render(request, "main/index.html")
+    
 @login_required(login_url="studentLogin")
 @allowed_users(allowed_roles=["STUDENT"])
 def studentProfile(request):
@@ -283,11 +283,12 @@ def collegeLogin(request):
                 return redirect("collegelogin")
             
             user_login = authenticate(username=username, password=password)
-            
+
             # Login after successfully checking the user  
             if user_login is not None:
                 login(request, user_login)
                 return redirect("home")
+             
     return render(request, "./authentication/college-login.html", {"form":form})
 
 #student logout 
@@ -358,7 +359,7 @@ def change_password_college(request):
 @allowed_users(allowed_roles=["COLLEGE"])
 def collegeInfo(request, id):
     try:
-        college_data = CollegeInfo.objects.get(college_id=id)
+        college_data = CollegeInfo.objects.get(college_name_id=id)
         form = CollegeInfoForm(instance=college_data)
         context = {
             'form' : form,
@@ -377,7 +378,7 @@ def collegeInfo(request, id):
 @allowed_users(allowed_roles=["COLLEGE"])
 def updateCollegeInfo(request, id):
     try:
-        student_data = CollegeInfo.objects.get(college_id = id)
+        student_data = CollegeInfo.objects.get(college_name_id = id)
         if request.method == "POST":
             form = CollegeInfoForm(request.POST, instance=student_data)
             if form.is_valid():

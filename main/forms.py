@@ -1,18 +1,18 @@
 from django import forms
 from django.forms import ModelForm
 
-from .models import StudentProfile, CollegeProfile, StudentInfo, CollegeInfo, Question, Options
+from .models import StudentProfile, CollegeProfile, StudentInfo, CollegeInfo, Question
 
 # Create forms here
 
 class StudentRegistrationForm(forms.Form):
     #Create student registration form field
-    first_name = forms.CharField()
-    last_name = forms.CharField()
-    username = forms.CharField()
-    email = forms.EmailField()
-    password = forms.CharField(widget=forms.PasswordInput)
-    confirm_password = forms.CharField(widget=forms.PasswordInput)
+    first_name = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control reg-input' , 'placeholder':'First Name'}))
+    last_name = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control reg-input' , 'placeholder':'Last Name'}))
+    username = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control reg-input' , 'placeholder':'Username'}))
+    email = forms.EmailField(widget=forms.TextInput(attrs={'class':'form-control reg-input' , 'placeholder':'Email'}))
+    password = forms.CharField( widget=forms.PasswordInput(attrs={'class':'form-control reg-input' , 'placeholder':'Password','id':'password'}))
+    confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control reg-input' , 'placeholder':'Confrim Password','id':'confirmPassword'}))
     
     
 class StudentProfileForm(forms.ModelForm):
@@ -32,7 +32,7 @@ class StudentProfileForm(forms.ModelForm):
 class StudentLoginForm(forms.Form):
     # Create student login form here
     username = forms.CharField(label="Username", widget=forms.TextInput(attrs={'class':'form-control'}))
-    password = forms.CharField(label="Password", widget=forms.PasswordInput(attrs={'class':'form-control'}))
+    password = forms.CharField(label="Password", widget=forms.PasswordInput(attrs={'class':'form-control' ,'id':'password'}))
     
 class CollegeProfileForm(forms.ModelForm):
     # Create college profile form here
@@ -52,15 +52,15 @@ class CollegeProfileForm(forms.ModelForm):
 
 class CollegeRegistrationForm(forms.Form):
     #Create college registration form field
-    username = forms.CharField()
-    email = forms.EmailField()
-    password = forms.CharField(widget=forms.PasswordInput)
-    confirm_password = forms.CharField(widget=forms.PasswordInput)
+    username = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control reg-input' , 'placeholder':'User Name'}))
+    email = forms.EmailField(widget=forms.TextInput(attrs={'class':'form-control reg-input' , 'placeholder':'Email'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control reg-input' , 'placeholder':'Password','id':'password'}))
+    confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control reg-input' , 'placeholder':'Confirm Password','id':'confirmPassword'}))
 
 class CollegeLoginForm(forms.Form):
     # Create student login form here
     username = forms.CharField(label="Username", widget=forms.TextInput(attrs={'class':'form-control'}))
-    password = forms.CharField(label="Password", widget=forms.PasswordInput(attrs={'class':'form-control'}))
+    password = forms.CharField(label="Password", widget=forms.PasswordInput(attrs={'class':'form-control', 'id':'password'}))
     
 class StudentInfoForm(forms.ModelForm):
     #Crate student info form here
