@@ -1,0 +1,79 @@
+{% extends "base.html" %} {% block title %} Colleges in Nepal 
+{% endblock title %} {% block contents %}
+<section class="p-5"></section>
+<section class="p-2"></section>
+<section class="starter-page-page pt-5">
+  <main class="main">
+    <!-- Page Title -->
+    <div class="page-title">
+      <nav class="breadcrumbs">
+        <div class="container">
+          <ol>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li class="current">Colleges in Nepal</li>
+          </ol>
+        </div>
+      </nav>
+    </div><!-- End Page Title -->
+  </main>
+  <section class="px-5 d-flex align-items-center justify-content-center flex-column gap-4">
+    {% for data in college_data %}
+    <div class="bg-light rounded-5 border border-dark border-2 p-4 w-100" style="max-width: 900px">
+      <div class="d-flex align-items-center mb-3 p-2">
+        <img
+          alt="Logo of Asian School Of Management and Technology"
+          class="rounded-circle me-3 border border-dark border-2"
+          height="105"
+          src="{{data.college_profile_img.url}}"
+          width="105"
+        />
+        <div>
+          <h1 class="h3 fw-bold text-dark py-2">
+            {{data.college_name}} <span class="fs-5">, {{data.college_location}}</span>
+          </h1>
+          <p class="text-muted d-flex align-items-center mb-0">
+            <i class="fas fa-map-marker-alt me-2"> </i>
+            {{data.address}}
+          </p>
+        </div>
+      </div>
+      {% for item in course_data  %}
+        {% if data.college_id == item.college_name_id %}
+        <div class="my-2 ms-3 fs-5 fst-italic">
+          <a class="d-block text-primary text-decoration-none" href="#">
+            {{item.courses}}
+          </a>
+        </div>
+        {% endif %}
+      {% endfor %}
+      <div class="d-flex justify-content-between align-items-center ms-3">
+        <div class="d-flex gap-3">
+          <a
+            class="d-flex align-items-center text-dark text-decoration-none"
+            href="#"
+          >
+            <i class="fas fa-address-book me-2"> </i>
+            Contact
+          </a>
+          <a
+            class="d-flex align-items-center text-dark text-decoration-none"
+            href="#"
+          >
+            <i class="fas fa-book me-2"> </i>
+            Courses
+          </a>
+          <a
+            class="d-flex align-items-center text-dark text-decoration-none"
+            href="#"
+          >
+            <i class="fas fa-pen me-2"> </i>
+            Write Review
+          </a>
+        </div>
+        <button class="btn btn-primary rounded-pill shadow-sm">Apply Now</button>
+      </div>
+    </div>
+    {% endfor %}
+  </section>
+</section>
+{% endblock contents %}

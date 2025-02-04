@@ -15,8 +15,11 @@ from .views import *
 
 urlpatterns = [
     path("",home,name="home"), 
+    path("locationselection/",locationSelection, name="locationSelection"),
+    path("collegeAbroad/", collegeAbroad, name="collegeAbroad"),
+    path("collegeNepal/", collegeNepal, name="collegeNepal"),
     path("studentProfile/", studentProfile, name="studentProfile"),
-        
+    path("collegeProfile/<int:id>", collegeProfile, name="collegeProfile"),
     # ----------------------------- authentication -----------------------------
     path("selection/",selection,name="selection"),
     # ----------- student authentication section ----------- 
@@ -47,8 +50,8 @@ urlpatterns = [
     
     # -------------------------------- Apptitiude test section --------------------------------
     path('test/',categorySelection, name="testCategory"),
-    path('aptitudetest/', aptitudeTest, name="test"),
-    path('result/', testResult, name="result"),
+    path('generaltest/', aptitudeTest, name="test"),
+    path('generaltestresult/', testResult, name="result"),
     path('verbaltest/',verbalReasoningTest, name="verbalTest"),
     path('verbaltestresult/',verbalTestCheck, name="verbalTestResult")
 ]

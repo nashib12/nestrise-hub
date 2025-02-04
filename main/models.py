@@ -68,16 +68,29 @@ class StudentProfile(models.Model):
         self.clean_phone_number()
         super().save()
 
+class CollegeLocation(models.Model):
+    location = models.CharField(max_length=200)
+    
+    class Meta:
+        db_table = 'College Location'
+        managed = True
+        verbose_name = 'Location'
+        verbose_name_plural = 'Locations'
+        
+    def __str__(self):
+        return self.location
+    
 class CollegeProfile(models.Model):
     # Create college profile model here
-    
     # make connection with the currently logged in user
     college = models.OneToOneField(User, on_delete=models.CASCADE)
     id_user = models.IntegerField()
+    college_name = models.CharField(max_length=200, blank=True)
     college_profile_img = models.ImageField(upload_to="college profile img", default="../static/images/profile-white.jpg")
     established_date = models.DateField(null=True)
     phone_number = models.CharField(null=True, max_length=15)
     address = models.CharField(max_length=100, null=True)
+    college_location = models.ForeignKey(CollegeLocation, on_delete=models.CASCADE, blank=True, null=True)
     websites = models.URLField(null=True, max_length=200)
     type = models.CharField(null=True, choices=college_type, max_length=20)
     college_cover = models.ImageField(upload_to="college profle cover", blank=True)
@@ -128,7 +141,7 @@ class StudentInfo(models.Model):
 class CollegeInfo(models.Model):
     # Create model fields for additional college information
     college_name = models.ForeignKey(User, on_delete=models.CASCADE)
-    courses = models.CharField(max_length=50)
+    courses = models.CharField(max_length=100)
     fee_structure = models.DecimalField(max_digits=9, decimal_places=2)
     requirements_for_enroll = models.CharField(max_length=200)
     course_duration = models.CharField(max_length=20, null=True)

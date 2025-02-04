@@ -1,21 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+        <!-- custom css files link -->
+        <link rel="stylesheet" href="../static/css/auth.css">
 </head>
-<body>
-    <form method="POST" action="{% url 'test' %}">
-        {% csrf_token %}
-        <label>Choose a category:</label>
-        <select name="category_id" id="category_id" required>
-            {% for category in categories %}
-                <option value="{{category.id}}">{{category.name}}</option>
-            {% endfor %}
-            
-        </select>
-        <input type="submit">
-    </form>
+<body class="bg-gray-900 flex items-center justify-center min-h-screen">
+    <section class="card-shadow">
+        <div class="bg-white rounded-lg shadow-lg p-8 relative w-120">
+            <a href="{% url 'home' %}"><button class="absolute top-2 right-2 text-black text-2xl">
+                <i class="fas fa-times"></i>
+            </button></a>
+            <h1 class="text-3xl font-bold text-center mb-2 mt-3 italic">
+                <span class="underline">General Knowledge Test</span>
+            </h1>
+            <p class="text-center font-semibold text-lg mb-4 italic">Select a Category</p>
+            <div class="flex justify-center mb-4">
+                <form action="{% url 'test' %}" method="post">
+                    {% csrf_token %}
+                    <select class="border border-black rounded w-full py-2 px-3 text-center text-lg italic" name="category_id" id="category_id" required>
+                        {% for category in categories %}
+                            <option value="{{category.id}}">{{category.name}}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="flex justify-center mt-5">
+                        <button class="bg-green-500 text-white font-bold py-3 px-6 rounded-full shadow-lg hover:bg-green-600 text-lg italic">
+                            Start Test
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <script src="https://cdn.tailwindcss.com"></script>
 </body>
 </html>
+

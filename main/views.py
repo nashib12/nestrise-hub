@@ -23,12 +23,39 @@ logger = logging.getLogger(__name__)
 def home(request):
     # Create landing pages views here
         return render(request, "main/index.html")
+
+def locationSelection(request):
+    return render(request, "main/location_selection.html")
+
+def collegeAbroad(request):
+    return render(request, "main/404.html")
+
+def collegeNepal(request):
+    college_data = CollegeProfile.objects.all()
+    course_data = CollegeInfo.objects.all()
     
+    context = {
+        "college_data" : college_data,
+        "course_data" : course_data
+    }
+    return render(request, "main/colleges_Nepal.html", context)
+
 @login_required(login_url="studentLogin")
 @allowed_users(allowed_roles=["STUDENT"])
 def studentProfile(request):
     return render(request,"main/student-profile.html")
 
+@login_required(login_url="collegeLogin")
+@allowed_users(allowed_roles=["COLLEGE"])
+def collegeProfile(request, id):
+    data = CollegeProfile.objects.get(college_id=id)
+    course = CollegeInfo.objects.filter(college_name_id = id)
+    
+    context = {
+        "data" : data,
+        "course" : course
+    }
+    return render(request,"main/college_profile.html", context)
 
 # ----------------------------- user registration and authintication ----------------------------- 
 def selection(request):
@@ -182,16 +209,12 @@ def educationLevel(request, id):
     try:
         student_data = StudentInfo.objects.get(user_id = id)
         form = StudentInfoForm(instance=student_data)
-        context = {
-        'form' : form,
-        'student_data' : student_data
-    }
     except StudentInfo.DoesNotExist:
         form = StudentInfoForm()
-        context = {
-            'form' : form
-        }
-   
+    context = {
+        'form' : form
+    }
+
     return render(request, "./authentication/update-student-edu.html", context)
 
 #update the additional student info here
@@ -240,7 +263,7 @@ def collegeRegister(request):
                         # messages.error(request, "Email already exists!!")
                         return redirect("collegeRegister")
                 
-                    user = User.objects.create_user(username=username, email=email, password=password)
+                    User.objects.create_user(username=username, email=email, password=password)
 
                     logging.basicConfig(level=logging.INFO)
                     handler = logging.FileHandler("./log/college_create.log")
@@ -288,7 +311,6 @@ def collegeLogin(request):
             if user_login is not None:
                 login(request, user_login)
                 return redirect("home")
-             
     return render(request, "./authentication/college-login.html", {"form":form})
 
 #student logout 
@@ -324,7 +346,7 @@ def updateCollegeProfile(request, id):
             if form.is_valid():
                 form.save()
                 return redirect("home")
-    except Exception as e:
+    except ValueError as e:
         handler = logging.FileHandler("./log/college_profile.log")
         formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
         handler.setFormatter(formatter)
@@ -358,18 +380,15 @@ def change_password_college(request):
 @login_required(login_url="collegeLogin")
 @allowed_users(allowed_roles=["COLLEGE"])
 def collegeInfo(request, id):
-    try:
-        college_data = CollegeInfo.objects.get(college_name_id=id)
-        form = CollegeInfoForm(instance=college_data)
-        context = {
-            'form' : form,
-            'college_data' : college_data
-        }
-    except CollegeInfo.DoesNotExist:
-        form = CollegeInfoForm()
-        context = {
-            'form' : form
-        }
+    # try:
+    #     college_data = CollegeInfo.objects.get(college_name_id=id)
+    #     form = CollegeInfoForm(instance=college_data)
+    # except CollegeInfo.DoesNotExist:
+    form = CollegeInfoForm()
+        
+    context = {
+        'form' : form
+    }
     
     return render(request, "./authentication/update-college-info.html", context)
 
@@ -377,19 +396,19 @@ def collegeInfo(request, id):
 @login_required(login_url="collegeLogin")
 @allowed_users(allowed_roles=["COLLEGE"])
 def updateCollegeInfo(request, id):
-    try:
-        student_data = CollegeInfo.objects.get(college_name_id = id)
-        if request.method == "POST":
-            form = CollegeInfoForm(request.POST, instance=student_data)
-            if form.is_valid():
-                form.save()
-                return redirect("home")
-    except CollegeInfo.DoesNotExist:
+    # try:
+    #     college_data = CollegeInfo.objects.get(college_name_id = id)
+    #     if request.method == "POST":
+    #         form = CollegeInfoForm(request.POST, instance= college_data)
+    #         if form.is_valid():
+    #             form.save()
+    #             return redirect("home")
+    # except CollegeInfo.DoesNotExist:
         if request.method == "POST":
             form = CollegeInfoForm(request.POST)
             if form.is_valid():
                 data = form.save(commit=False)
-                data.user = request.user
+                data.college_name = request.user
                 data.save()
                 return redirect("home")
         
@@ -400,7 +419,6 @@ def updateCollegeInfo(request, id):
 def categorySelection(request):
     categories = fetch_categories()
     return render(request, "./tests/category_selection.html", {"categories": categories})
-
 
 @login_required(login_url="studentLogin")
 @allowed_users(allowed_roles=["STUDENT"])
@@ -422,12 +440,14 @@ def aptitudeTest(request):
             random.shuffle(all_answers)
             # Store the shuffled answers in the question dictionary
             question["shuffled_answers"] = all_answers
-        return render(request, "./tests/test.html", {"questions": questions})
+        return render(request, "./tests/general_test.html", {"questions": questions})
 
 @login_required(login_url="studentLogin")
 @allowed_users(allowed_roles=["STUDENT"])
 def testResult(request):
     total_marks = 0
+    correct_ans = 0
+    incorect_ans = 25
     if request.method == "POST":
         for key, value in request.POST.items():
             if key.startswith("question_"):
@@ -435,11 +455,18 @@ def testResult(request):
                 correct_answer = request.POST.get(f"correct_answer_{question_id}")
                 if value == correct_answer:
                     total_marks += 4
+                    correct_ans += 1
+                    incorect_ans -= 1
                 
         #Save the reult to database
         user_name = request.user
         TestResult.objects.create(user_name=user_name, total_marks=total_marks)
-        return render(request, "./tests/result.html", {"total_marks" : total_marks})
+        context = {
+            "total_marks" : total_marks,
+            "correct_answer" : correct_ans,
+            "incorrect_answer" : incorect_ans
+        }
+        return render(request, "./tests/general_test_result.html", context)
 
 # --------------------- Verbal Reasoning Test ---------------------
 @login_required(login_url="studentLogin")
@@ -462,14 +489,23 @@ def verbalTestCheck(request):
         form = VerbalTestForm(question_ids, request.POST)
         if form.is_valid():
             total_marks = 0
+            correct_ans = 0
+            incorect_ans = 25
             for kay, value in form.cleaned_data.items():
                 selected_option = Options.objects.get(id=value)
                 if selected_option.is_true:
                     total_marks += 4
+                    correct_ans += 1
+                    incorect_ans -= 1
         #Save the reult to database
         user_name = request.user
         TestResult.objects.create(user_name=user_name, total_marks=total_marks)
-        return render(request, "./tests/result.html", {"total_marks" : total_marks})       
+        context = {
+            "total_marks" : total_marks,
+            "correct_answer" : correct_ans,
+            "incorrect_answer" : incorect_ans
+        }
+        return render(request, "./tests/verbal_test_result.html", context)       
             
 def result_view(request):
     results = TestResult.objects.all().order_by("-date")

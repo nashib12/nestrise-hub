@@ -22,6 +22,9 @@
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
+  <!-- Font awesome cdn link -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+
   <!-- Vendor CSS Files -->
   <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="../static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
@@ -31,7 +34,6 @@
 
   <!-- Main CSS File -->
   <link href="../static/css/main.css" rel="stylesheet">
-  <link rel="stylesheet" href="../static/css/styles.css">
 
   <!-- =======================================================
   * Template Name: FlexStart
@@ -56,12 +58,13 @@
           <li><a href="{% url 'home' %}" class="active">Home<br></a></li>
           <li><a href="#about">About</a></li>
           <li><a href="#services">Services</a></li>
-          <li><a href="#">College</a>
+          <li><a href="{% url 'locationSelection' %}">College</a>
           <li><a href="#contact">Contact</a></li>
           {% if request.user.is_authenticated %}
             {% if request.user|has_group:'STUDENT' %}
               <li class="dropdown">{{request.user.first_name}}<i class="bi bi-chevron-down toggle-dropdown"></i>
                 <ul>
+                  <li><a href="{% url 'studentProfile' %}">View Profile</a></li>
                   <li><a href="{% url 'studentProfileSetting' user.id %}">Profile Settings</a></li>
                   <li><a href="{% url 'educationLevel' user.id %}">Add Education Info</a></li>
                   <li><a href="{% url 'changePasswordStudent'%}">Change Password</a></li>
@@ -71,6 +74,7 @@
               {% elif request.user|has_group:'COLLEGE' %}
               <li class="dropdown">{{request.user.username}}<i class="bi bi-chevron-down toggle-dropdown"></i>
                 <ul>
+                  <li><a href="{% url 'collegeProfile' user.id %}">View Profile</a></li>
                   <li><a href="{% url 'collegeProfileSetting' user.id %}">Profile Settings</a></li>
                   <li><a href="{% url 'collegeInfo' user.id %}">Add College Info</a></li>
                   <li><a href="{% url 'changePasswordCollege' %}">Change Password</a></li>

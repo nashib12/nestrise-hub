@@ -38,16 +38,18 @@ class CollegeProfileForm(forms.ModelForm):
     # Create college profile form here
     class Meta:
         model = CollegeProfile
-        fields = ("established_date", "college_profile_img" , "phone_number", "address", "websites", "type", "college_cover" ,"about")
+        fields = ("college_name","established_date", "college_profile_img" , "phone_number", "address", "college_location", "websites", "type", "college_cover" ,"about")
         widget = {
-            "established_date": forms.DateInput(attrs={'class':'from-control'}),
+            "college_name": forms.TextInput(attrs={'class':'form-control'}),
+            "established_date": forms.DateInput(attrs={'class':'form-control'}),
             "college_profile_img" : forms.FileInput(attrs={'class':'form-control'}) , 
-            "phone_number" : forms.NumberInput(attrs={'class':'from-control'}), 
-            "address" : forms.TextInput(attrs={'class':'form-control'}), 
+            "phone_number" : forms.NumberInput(attrs={'class':'form-control'}), 
+            "address" : forms.TextInput(attrs={'class':'form-control'}),
+            "college_location":forms.ChoiceField(), 
             "websites" : forms.TextInput(attrs={'class':'form-control'}),
             "type" : forms.RadioSelect(attrs={'class': 'form_control'}),
-            "college_cover" : forms.FileInput(attrs={'class':'from-control'}),
-            "about" : forms.Textarea(attrs={'class':'from-control'})
+            "college_cover" : forms.FileInput(attrs={'class':'form-control'}),
+            "about" : forms.Textarea(attrs={'class':'form-control'})
             }        
 
 class CollegeRegistrationForm(forms.Form):
@@ -98,3 +100,4 @@ class VerbalTestForm(forms.Form):
                 widget=forms.RadioSelect,
                 required=True
             )
+            

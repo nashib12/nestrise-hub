@@ -1,0 +1,54 @@
+{% extends "base.html" %} {% block title %} Colleges in Nepal 
+{% endblock title %} {% block contents %}
+<section class="p-5"></section>
+<section class="p-2"></section>
+<section class="starter-page-page pt-5">
+  <main class="main">
+    <!-- Page Title -->
+    <div class="page-title">
+      <nav class="breadcrumbs">
+        <div class="container">
+          <ol>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li class="current">{{request.user.username}}'s Profile</li>
+          </ol>
+        </div>
+      </nav>
+    </div><!-- End Page Title -->
+  </main>
+</section>
+<section>
+    <div class="container">
+        <div class="row">
+            <h1>{{data.college_name}}</h1>
+              <img src="{{data.college_profile_img.url}}" alt="Profile Img" class="img-fluid w-50 h-50">
+        </div>
+        <div class="row">
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">S.N.</th>
+                    <th scope="col">Course</th>
+                    <th scope="col">Fee</th>
+                    <th scope="col">Requirements</th>
+                    <th scope="col">Duration</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for item in course %}
+                    <tr>
+                        <th scope="row">{{forloop.counter}}</th>
+                        <td>{{item.courses}}</td>
+                        <td>{{item.fee_structure}}</td>
+                        <td>{{item.requirements_for_enroll}}</td>
+                        <td>{{item.course_duration}}</td>
+                        <td><a href="" class="btn btn-primary">Update</a><a href="" class="btn btn-danger">Delete</a></td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+        </div>
+    </div>
+</section>
+{% endblock contents %}

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+
+</head>
+<body class="bg-black" style="font-size: 1.29rem;">
+    <section class="flex items-center justify-center min-h-screen">
+        <div class="bg-white rounded-lg p-8 relative w-full max-w-md">
+            <a href="{% url 'home' %}"><button class="absolute top-2 right-2 text-black text-2xl">
+                <i class="fas fa-times"></i>
+            </button></a>
+            <h1 class="text-center text-3xl font-bold italic mb-4">Test Result</h1>
+            <hr class="border-t-3 border-gray-300 mb-3">
+            <div class="mb-3">
+                <p class="font-semibold">Correct Answer: <strong>{{ correct_answer }} / 25</strong></p>
+            </div>
+            <div class="mb-3">
+                <p class="font-semibold">Incorrect Answer: <strong>{{ incorrect_answer }} / 25</strong></p>
+            </div>
+            <div class="mb-4 text-center">
+                <p class="font-semibold">Obtained Mark: <strong>{{ total_marks }} / 100</strong></p>
+            </div>
+            <div class="flex justify-center">
+                <a href="{% url 'testCategory' %}" ><button class="bg-gradient-to-r from-green-400 to-blue-500 text-white font-bold py-3 px-8 shadow-xl transform transition-transform hover:scale-110 hover:shadow-2xl">
+                    Take Another Test
+                </button></a>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</body>
+</html>
+

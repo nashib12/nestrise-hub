@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %} 
+College in Abroad 
+{% endblock title %} {% block contents %}
+<section class="p-5"></section>
+<section class="p-2"></section>
+<section class="starter-page-page pt-5">
+  <main class="main">
+    <!-- Page Title -->
+    <div class="page-title">
+      <nav class="breadcrumbs">
+        <div class="container">
+          <ol>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li class="current">Colleges in Abroad</li>
+          </ol>
+        </div>
+      </nav>
+    </div>
+    <!-- End Page Title -->
+  </main>
+  <div
+    class="container p-5 d-flex flex-column align-items-center justfiy-content-between"
+  >
+    <img
+      src="../static/img/404-e.svg"
+      alt="404"
+      class="img-fluid w-75 h-75 pb-3"
+    />
+    <h1>Page is currently under Maintainace</h1>
+    <h2>Sorry for the inconvience.</h2>
+  </div>
+</section>
+{% endblock contents %}
