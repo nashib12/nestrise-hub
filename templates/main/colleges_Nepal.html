@@ -1,4 +1,4 @@
-{% extends "base.html" %} {% block title %} Colleges in Nepal 
+{% extends "base.html" %} {% load my_filters %} {% block title %} Colleges in Nepal 
 {% endblock title %} {% block contents %}
 <section class="p-5"></section>
 <section class="p-2"></section>
@@ -12,6 +12,17 @@
             <li><a href="{% url 'home' %}">Home</a></li>
             <li class="current">Colleges in Nepal</li>
           </ol>
+        </div>
+        <div class="dropdown d-flex ">
+          <button class="btn btn-warning btn-lg dropdown-toggle ms-auto me-5" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Choose a Location
+          </button>
+          <ul class="dropdown-menu">
+            {% for item in location %}
+            <li><a class="dropdown-item" href="?location={{item.id}}">{{item}}</a></li>
+            {% endfor %}
+        
+          </ul>
         </div>
       </nav>
     </div><!-- End Page Title -->
@@ -29,7 +40,7 @@
         />
         <div>
           <h1 class="h3 fw-bold text-dark py-2">
-            {{data.college_name}} <span class="fs-5">, {{data.college_location}}</span>
+            <a href="{% url 'viewCollegeProfile' data.college_id %}" class="text-decoration-none text-dark">{{data.college_name}}</a> <span class="fs-5">, {{data.college_location}}</span> <i class="fas fa-check-circle text-success"> </i>
           </h1>
           <p class="text-muted d-flex align-items-center mb-0">
             <i class="fas fa-map-marker-alt me-2"> </i>
@@ -70,10 +81,29 @@
             Write Review
           </a>
         </div>
-        <button class="btn btn-primary rounded-pill shadow-sm">Apply Now</button>
+        {% if request.user.is_authenticated %}
+          {% if request.user|has_group:'STUDENT' %}
+            <a href="{% url 'application' data.college_id %}"><button class="btn btn-primary rounded-pill shadow-sm">Apply Now</button></a>
+          {% endif %}
+        {% endif %}
       </div>
     </div>
     {% endfor %}
   </section>
+  <div class="d-flex flex-row-reverse pe-5">
+      <ul class="pagination border border-warning border-3 rounded-3">
+        {% if college_data.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page={{college_data.previous_page_number}}">Previous</a></li>
+        {% endif %}
+        {% for n in num %}
+        <li class="page-item"><a class="page-link" href="?page={{n}}">{{n}}</a></li>
+        {% endfor %}
+        {% if college_data.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{college_data.next_page_number}}">Next</a></li>
+        {% endif %}
+       
+      </ul>
+    </nav>
+  </div>
 </section>
 {% endblock contents %}

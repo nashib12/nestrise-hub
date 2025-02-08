@@ -9,6 +9,9 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
+from django.views.generic import UpdateView, DeleteView
+from django.core.paginator import Paginator
+from django.contrib import messages
 
 from .models import *
 from .forms import *
@@ -22,7 +25,14 @@ logger = logging.getLogger(__name__)
 
 def home(request):
     # Create landing pages views here
-        return render(request, "main/index.html")
+    gallery = Gallery.objects.all()
+    faqs = Faqs.objects.all()
+    
+    context = {
+        "gallery" : gallery,
+        "question" : faqs
+    }
+    return render(request, "main/index.html", context)
 
 def locationSelection(request):
     return render(request, "main/location_selection.html")
@@ -31,29 +41,46 @@ def collegeAbroad(request):
     return render(request, "main/404.html")
 
 def collegeNepal(request):
-    college_data = CollegeProfile.objects.all()
+    college_location = request.GET.get("location")
+    if college_location:
+        college_data = CollegeProfile.objects.filter(college_location_id = college_location)
+    else:
+        college_data = CollegeProfile.objects.all()
     course_data = CollegeInfo.objects.all()
+    location = CollegeLocation.objects.all()
+
     
+    paginator = Paginator(college_data, 6)
+    page_num = request.GET.get('page')
+    data = paginator.get_page(page_num)
+    total_page = data.paginator.num_pages
+     
     context = {
-        "college_data" : college_data,
-        "course_data" : course_data
+        "college_data" : data,
+        "course_data" : course_data,
+        "num" : [n+1 for n in range(total_page)],
+        "location" : location
     }
+    
     return render(request, "main/colleges_Nepal.html", context)
 
 @login_required(login_url="studentLogin")
 @allowed_users(allowed_roles=["STUDENT"])
-def studentProfile(request):
-    return render(request,"main/student-profile.html")
+def studentProfile(request, id):
+    data = StudentProfile.objects.get(user_id=id)
+    return render(request,"main/student-profile.html",{"data":data})
 
 @login_required(login_url="collegeLogin")
 @allowed_users(allowed_roles=["COLLEGE"])
 def collegeProfile(request, id):
-    data = CollegeProfile.objects.get(college_id=id)
+    data = CollegeProfile.objects.get(id_user=id)
     course = CollegeInfo.objects.filter(college_name_id = id)
+    application = Application.objects.filter(college_name = id)
     
     context = {
         "data" : data,
-        "course" : course
+        "course" : course,
+        "application" : application
     }
     return render(request,"main/college_profile.html", context)
 
@@ -82,15 +109,15 @@ def studentRegister(request):
                     validate_password(password)
                     
                     if User.objects.filter(username=username).exists():
-                        # messages.error(request, "Username already exists!!")
+                        messages.error(request, "Username already exists!!")
                         return redirect("studentRegister")
                 
                     if User.objects.filter(email=email).exists():
-                        # messages.error(request, "Email already exists!!")
+                        messages.error(request, "Email already exists!!")
                         return redirect("studentRegister")
                 
                     User.objects.create_user(first_name=first_name, last_name=last_name, username=username, email=email, password=password)
-                    
+                    messages.success(request,"Your account has been successfully created!")
                     logging.basicConfig(level=logging.INFO)
                     handler = logging.FileHandler("./log/user_create.log")
                     formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
@@ -129,6 +156,7 @@ def studentLogin(request):
 
             # check the existence of input username
             if not User.objects.filter(username=username).exists():
+                messages.error(request, "Username or password doen't match!!")
                 return redirect("studentlogin")
             
             user_login = authenticate(username=username, password=password)
@@ -136,7 +164,7 @@ def studentLogin(request):
             # Login after successfully checking the user  
             if user_login is not None:
                 login(request, user_login)
-                return redirect("studentProfile")
+                return redirect("home")
     return render(request, "./authentication/student-login.html", {"form":form})
 
 #student logout 
@@ -149,7 +177,8 @@ def studentLogout(request):
 #Update student profile after successfuly creating student profile
 @login_required(login_url="studentLogin")
 @allowed_users(allowed_roles=["STUDENT"])
-def studentProfileSetting(request, id):
+def studentProfileSetting(request):
+    id = request.user.id
     student_data = StudentProfile.objects.get(user_id=id)
     form = StudentProfileForm(instance=student_data)
 
@@ -171,14 +200,16 @@ def updateStudentProfile(request, id):
             # Update the student profile if data is valid
             if form.is_valid():
                 form.save()
-                return redirect("home")
+                messages.success(request, "Your profile has been succesfully updated")
+                return redirect("studentProfileSetting")
     except Exception as e:
         handler = logging.FileHandler("./log/student_profile.log")
         formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
         handler.setFormatter(formatter)
         logger.addHandler(handler)
         logger.error(str(e))
-        return redirect("home")
+        messages.error(request, str(e))
+        return redirect("studentProfileSetting")
     
 #change the password for student
 @login_required(login_url="studentLogin")
@@ -191,6 +222,7 @@ def change_password_student(request):
         try:   
             if form.is_valid():
                 form.save()
+                messages.success(request, "Your password has been successfully upadted!")
                 return redirect("studentLogin")
         except Exception as e:
             handler = logging.FileHandler("./log/password_change.log")
@@ -198,6 +230,7 @@ def change_password_student(request):
             handler.setFormatter(formatter)
             logger.addHandler(handler)
             logger.error(str(e))
+            messages.error(request, str(e))
             return redirect("changePasswordStudent")
             
     return render(request, "./authentication/change-password-student.html", {'form':form})
@@ -227,7 +260,8 @@ def updateEducationLevel(request, id):
             form = StudentInfoForm(request.POST, instance=student_data)
             if form.is_valid():
                 form.save()
-                return redirect("home")
+                messages.success(request, "Your education label has been succesfully updated!")
+                return redirect("studentProfile")
     except StudentInfo.DoesNotExist:
         if request.method == "POST":
             form = StudentInfoForm(request.POST)
@@ -235,7 +269,8 @@ def updateEducationLevel(request, id):
                 data = form.save(commit=False)
                 data.user = request.user
                 data.save()
-                return redirect("home")
+                messages.success(request, "Your education label has been succesfully updated!")
+                return redirect("studentProfile")
 
 # ---------------------- college registration and update section ----------------------
 # College registration
@@ -256,15 +291,15 @@ def collegeRegister(request):
                     validate_password(password)
                     
                     if User.objects.filter(username=username).exists():
-                        # messages.error(request, "Username already exists!!")
+                        messages.error(request, "Username already exists!!")
                         return redirect("collegeRegister")
                 
                     if User.objects.filter(email=email).exists():
-                        # messages.error(request, "Email already exists!!")
+                        messages.error(request, "Email already exists!!")
                         return redirect("collegeRegister")
                 
                     User.objects.create_user(username=username, email=email, password=password)
-
+                    messages.success(request, "Your account has been successfully created!!")
                     logging.basicConfig(level=logging.INFO)
                     handler = logging.FileHandler("./log/college_create.log")
                     formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
@@ -286,7 +321,9 @@ def collegeRegister(request):
                     formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
                     handler.setFormatter(formatter)
                     logger.addHandler(handler)
-                    logger.info(e)
+                    logger.info(str(e))
+                    messages.error(request, str(e))
+                    return redirect("home")
                     
     return render(request, "./authentication/college-registration.html", {"form" : form})
 
@@ -303,14 +340,16 @@ def collegeLogin(request):
 
             # check the existence of input username
             if not User.objects.filter(username=username).exists():
+                messages.error(request, "Username or password dosen't match!")
                 return redirect("collegelogin")
             
             user_login = authenticate(username=username, password=password)
-
+        
             # Login after successfully checking the user  
             if user_login is not None:
                 login(request, user_login)
                 return redirect("home")
+               
     return render(request, "./authentication/college-login.html", {"form":form})
 
 #student logout 
@@ -323,13 +362,14 @@ def collegeLogout(request):
 #Update student profile after successfuly creating student profile
 @login_required(login_url="collegeLogin")
 @allowed_users(allowed_roles=["COLLEGE"])
-def collegeProfileSetting(request, id):
+def collegeProfileSetting(request):
+    id = request.user.id
     college_data = CollegeProfile.objects.get(college_id=id)
     form = CollegeProfileForm(instance=college_data)
 
     context ={
         "form" : form,
-        "student_data" : college_data,
+        "college_data" : college_data,
     }
     
     return render(request, "./authentication/college-profile-settings.html", context)
@@ -338,13 +378,14 @@ def collegeProfileSetting(request, id):
 @login_required(login_url="collegeLogin")
 @allowed_users(allowed_roles=["COLLEGE"])
 def updateCollegeProfile(request, id):
-    student_data = CollegeProfile.objects.get(college_id=id)
+    college_data = CollegeProfile.objects.get(college_id=id)
     try:
         if request.method == "POST":
-            form = CollegeProfileForm(request.POST, request.FILES, instance=student_data)
+            form = CollegeProfileForm(request.POST, request.FILES, instance=college_data)
             # Update the student profile if data is valid
             if form.is_valid():
                 form.save()
+                messages.success(request, "Your information has been successfully updated")
                 return redirect("home")
     except ValueError as e:
         handler = logging.FileHandler("./log/college_profile.log")
@@ -352,6 +393,7 @@ def updateCollegeProfile(request, id):
         handler.setFormatter(formatter)
         logger.addHandler(handler)
         logger.error(str(e))
+        messages.error(request, str(e))
         return redirect("home")
     
 #change the password for college
@@ -365,6 +407,7 @@ def change_password_college(request):
         try:   
             if form.is_valid():
                 form.save()
+                messages.success(request, "Your password has been successfully updated.")
                 return redirect("collegeLogin")
         except Exception as e:
             handler = logging.FileHandler("./log/password_change.log")
@@ -372,14 +415,15 @@ def change_password_college(request):
             handler.setFormatter(formatter)
             logger.addHandler(handler)
             logger.error(str(e))
+            messages.error(request, str(e))
             return redirect("changePasswordCollege")
             
     return render(request, "./authentication/change-password-college.html", {'form':form})
 
-#update college info
+#add college info
 @login_required(login_url="collegeLogin")
 @allowed_users(allowed_roles=["COLLEGE"])
-def collegeInfo(request, id):
+def collegeInfo(request):
     # try:
     #     college_data = CollegeInfo.objects.get(college_name_id=id)
     #     form = CollegeInfoForm(instance=college_data)
@@ -392,10 +436,10 @@ def collegeInfo(request, id):
     
     return render(request, "./authentication/update-college-info.html", context)
 
-#update college info and save to database
+#save college info and save to database
 @login_required(login_url="collegeLogin")
 @allowed_users(allowed_roles=["COLLEGE"])
-def updateCollegeInfo(request, id):
+def updateCollegeInfo(request):
     # try:
     #     college_data = CollegeInfo.objects.get(college_name_id = id)
     #     if request.method == "POST":
@@ -410,8 +454,36 @@ def updateCollegeInfo(request, id):
                 data = form.save(commit=False)
                 data.college_name = request.user
                 data.save()
-                return redirect("home")
-        
+                messages.success(request, "Successfully added")
+                return redirect("collegeProfile")
+
+# #get college info 
+# @login_required(login_url="collegeLogin")
+# @allowed_users(allowed_roles=["COLLEGE"])
+# def editCollegeInfo(request, id):
+#     college_data = CollegeInfo.objects.get(id=id)
+#     form = CollegeInfoForm(instance=college_data)
+    
+#     return render(request, "./authentication/edit_college_info.html", {"form":form})
+
+#edit college info and save it to database
+class UpdateCollege(UpdateView):
+    template_name = "./authentication/edit_college_info.html"
+    model = CollegeInfo
+    form_class = CollegeInfoForm
+    success_url = "/"
+# def editedCollegeInfo(request, id):
+#     if request.method == "POST":
+#         college_data = CollegeInfo.objects.get(id = id)
+#         form = CollegeInfoForm(request.POST, instance= college_data)
+#         if form.is_valid():
+#             form.save()
+            # return redirect("home")
+            
+class DeleteCollege(DeleteView):
+    template_name = "./authentication/collegeinfo_confirm_delete.html"
+    model = CollegeInfo
+    success_url = "/"
 # -------------------------------------- Apptitude Test --------------------------------------
 # --------------------- General Knowlwdge Test ---------------------
 @login_required(login_url="studentLogin")
@@ -505,9 +577,47 @@ def verbalTestCheck(request):
             "correct_answer" : correct_ans,
             "incorrect_answer" : incorect_ans
         }
-        return render(request, "./tests/verbal_test_result.html", context)       
-            
-def result_view(request):
-    results = TestResult.objects.all().order_by("-date")
-    return render(request, "results.html", {"results": results})
+        return render(request, "./tests/verbal_test_result.html", context)             
  
+# -------------------------------------- Application Form --------------------------------------
+@login_required(login_url="studentLogin")
+@allowed_users(allowed_roles=["STUDENT"])
+def application(request, id):
+    # courses = CollegeInfo.objects.filter(college_name_id = id)
+    # return HttpResponse(courses)
+    form = ApplicationForm()
+    college_id = id
+    # return HttpResponse(f"College name = {college_id}")
+    context = {
+        "form": form,
+        "college_id" : college_id
+    }
+    return render(request, "./authentication/application_form.html", context)
+
+@login_required(login_url="studentLogin")
+@allowed_users(allowed_roles=["STUDENT"])
+def submitApplication(request):
+    college_id = request.GET.get("college_id")
+    test_score = TestResult.objects.filter(user_name_id = request.user.id).order_by('-date')[0]
+    if request.method == "POST":
+        form = ApplicationForm(request.POST)
+        if form.is_valid():
+            application = form.save(commit=False)
+            application.user = request.user
+            application.first_name = request.user.first_name
+            application.last_name = request.user.last_name
+            application.test_score = test_score.total_marks
+            application.college_name = college_id
+            application.save()
+            messages.success(request, "Your application has been successfully submitted.")
+            return redirect("home")
+        
+def viewCollegeProfile(request, id):
+    data = CollegeProfile.objects.get(id_user=id)
+    course = CollegeInfo.objects.filter(college_name_id = id)
+    
+    context = {
+        "data" : data,
+        "course" : course
+    }
+    return render(request,"main/view_college_profile.html", context)

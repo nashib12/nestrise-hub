@@ -32,6 +32,9 @@
   <link href="../static/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
   <link href="../static/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
+  <!-- alertify message -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css">
+
   <!-- Main CSS File -->
   <link href="../static/css/main.css" rel="stylesheet">
 
@@ -58,14 +61,16 @@
           <li><a href="{% url 'home' %}" class="active">Home<br></a></li>
           <li><a href="#about">About</a></li>
           <li><a href="#services">Services</a></li>
-          <li><a href="{% url 'locationSelection' %}">College</a>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#blog">Blog</a></li>
           <li><a href="#contact">Contact</a></li>
+          <li><a href="{% url 'locationSelection' %}">College</a></li>
           {% if request.user.is_authenticated %}
             {% if request.user|has_group:'STUDENT' %}
               <li class="dropdown">{{request.user.first_name}}<i class="bi bi-chevron-down toggle-dropdown"></i>
                 <ul>
-                  <li><a href="{% url 'studentProfile' %}">View Profile</a></li>
-                  <li><a href="{% url 'studentProfileSetting' user.id %}">Profile Settings</a></li>
+                  <li><a href="{% url 'studentProfile' user.id %}">View Profile</a></li>
+                  <li><a href="{% url 'studentProfileSetting' %}">Profile Settings</a></li>
                   <li><a href="{% url 'educationLevel' user.id %}">Add Education Info</a></li>
                   <li><a href="{% url 'changePasswordStudent'%}">Change Password</a></li>
                   <li ><a class="fs-5" href="{% url 'studentLogout' %}">Log Out</a></li>
@@ -75,8 +80,8 @@
               <li class="dropdown">{{request.user.username}}<i class="bi bi-chevron-down toggle-dropdown"></i>
                 <ul>
                   <li><a href="{% url 'collegeProfile' user.id %}">View Profile</a></li>
-                  <li><a href="{% url 'collegeProfileSetting' user.id %}">Profile Settings</a></li>
-                  <li><a href="{% url 'collegeInfo' user.id %}">Add College Info</a></li>
+                  <li><a href="{% url 'collegeProfileSetting' %}">Profile Settings</a></li>
+                  <li><a href="{% url 'collegeInfo' %}">Add Courses</a></li>
                   <li><a href="{% url 'changePasswordCollege' %}">Change Password</a></li>
                   <li ><a class="fs-5" href="{% url 'collegeLogout' %}">Log Out</a></li>
                 </ul>
@@ -115,12 +120,12 @@
       <div class="row gy-4">
         <div class="col-lg-4 col-md-6 footer-about">
           <a href="index.html" class="d-flex align-items-center">
-            <span class="sitename">FlexStart</span>
+            <span class="sitename">NestRise HUB</span>
           </a>
           <div class="footer-contact pt-3">
             <p>A108 Adam Street</p>
             <p>New York, NY 535022</p>
-            <p class="mt-3"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
+            <p class="mt-3"><strong>Phone:</strong> <span>+977 984-0700086</span></p>
             <p><strong>Email:</strong> <span>info@example.com</span></p>
           </div>
         </div>
@@ -138,16 +143,15 @@
         <div class="col-lg-2 col-md-3 footer-links">
           <h4>Our Services</h4>
           <ul>
-            <li><i class="bi bi-chevron-right"></i> <a href="#">Web Design</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="#">Web Development</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="#">Product Management</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="#">Marketing</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="#">Career Counselling</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="#">Education Counselling</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="#">Housing Marketing</a></li>
           </ul>
         </div>
 
         <div class="col-lg-4 col-md-12">
           <h4>Follow Us</h4>
-          <p>Cras fermentum odio eu feugiat lide par naso tierra videa magna derita valies</p>
+          <p>On our Different Social Media Accounts</p>
           <div class="social-links d-flex">
             <a href=""><i class="bi bi-twitter-x"></i></a>
             <a href=""><i class="bi bi-facebook"></i></a>
@@ -160,7 +164,7 @@
     </div>
 
     <div class="container copyright text-center mt-4">
-      <p>© <span>Copyright</span> <strong class="px-1 sitename">FlexStart</strong> <span>All Rights Reserved</span></p>
+      <p>© <span>Copyright</span> <strong class="px-1 sitename">NestRise HUB</strong> <span>All Rights Reserved</span></p>
       <div class="credits">
         <!-- All the links in the footer should remain intact. -->
         <!-- You can delete the links only if you've purchased the pro version. -->
@@ -183,10 +187,21 @@
   <script src="../static/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
   <script src="../static/vendor/isotope-layout/isotope.pkgd.min.js"></script>
   <script src="../static/vendor/swiper/swiper-bundle.min.js"></script>
+  
+  <!-- Alertfiy JavaScript -->
+  <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
 
   <!-- Main JS File -->
   <script src="../static/js/main.js"></script>
 
+  {% if messages %} {% for message in messages %}
+  <script>
+    var delay = alertify.get("notifier", "delay");
+    alertify.set("notifier", "delay", 5);
+    alertify.set("notifier", "position", "top-right");
+    alertify.success("{{message}}");
+    alertify.set("notifier", "delay", delay);
+  </script>
+  {% endfor %} {% endif %}
 </body>
-
 </html>

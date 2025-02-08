@@ -9,7 +9,12 @@
 <section>
     <div class="container p-5">
         <div class="row">
-            {% include "./form.html" %}
+            <form action="{% url 'updateEducationLevel' user.id %}" method="post">
+                {% csrf_token %}
+                {{form}}
+            
+                <input type="submit">
+            </form>
         </div>
     </div>
 </section>

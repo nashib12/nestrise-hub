@@ -1,0 +1,22 @@
+{% extends "auth.html" %}
+
+{% block title %}
+  Application Form
+{% endblock title %}
+
+{% block content %}
+<h1>Application Form</h1>
+<section>
+    <div class="container p-5">
+        <div class="row">
+            <form action="{% url 'submitApplication' %}?college_id={{college_id}}" method="post">
+                {% csrf_token %}
+            
+                {{form}}
+
+                <input type="submit">
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock content %}

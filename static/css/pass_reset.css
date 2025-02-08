@@ -1,0 +1,368 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Lobster&family=Lora:ital,wght@0,400..700;1,400..700&family=Playwrite+AU+SA:wght@100..400&family=Roboto+Slab:wght@100..900&display=swap');
+*{
+  font-family: "Playwrite AU SA", serif;
+}
+
+
+/* login form start */
+
+.login_form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  top: 200px;
+  font-size: 2.1rem;
+}
+.form-container {
+  width: 23%;
+  border-radius: 0.75rem;
+  background-color: rgba(17, 24, 39, 1);
+  padding: 2rem;
+  color: rgba(243, 244, 246, 1);
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
+    rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+}
+
+.title {
+  text-align: center;
+  font-size: 2.5rem;
+  line-height: 2rem;
+  font-weight: 700;
+}
+
+.form {
+  margin-top: 0.4rem;
+}
+
+.input-groupc {
+  margin-top: 0.7rem;
+  font-size: 1.075rem;
+  line-height: 1.25rem;
+}
+
+.input-groupc label {
+  display: block;
+  color: rgba(156, 163, 175, 1);
+  margin-bottom: 10px;
+}
+
+.input-groupc input {
+  width: 100%;
+  border-radius: 0.375rem;
+  border: 1px solid rgba(55, 65, 81, 1);
+  outline: 0;
+  background-color: rgba(17, 24, 39, 1);
+  padding: 0.75rem 1rem;
+  color: rgba(243, 244, 246, 1);
+}
+
+.input-groupc input:focus {
+  border-color: rgba(167, 139, 250);
+}
+
+.forgot {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 1.25rem;
+  line-height: 1.1rem;
+  color: rgba(156, 163, 175, 1);
+  margin: 8px 0 14px 0;
+}
+
+.forgot a,
+.signup a {
+  color: rgba(243, 244, 246, 1);
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.forgot a:hover,
+.signup a:hover {
+  text-decoration: underline rgba(167, 139, 250, 1);
+}
+
+.sign {
+  display: block;
+  width: 100%;
+  background-color: rgba(167, 139, 250, 1);
+  padding: 0.75rem;
+  text-align: center;
+  color: rgba(17, 24, 39, 1);
+  border: none;
+  border-radius: 0.375rem;
+  font-weight: 600;
+}
+
+.social-message {
+  display: flex;
+  align-items: center;
+  padding-top: 1rem;
+}
+
+.line {
+  height: 1px;
+  flex: 1 1 0%;
+  background-color: rgba(55, 65, 81, 1);
+}
+
+.social-message .message {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: rgba(156, 163, 175, 1);
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+}
+
+.social-icons .icon {
+  border-radius: 0.125rem;
+  padding: 0.75rem;
+  border: none;
+  background-color: transparent;
+  margin-left: 8px;
+}
+
+.social-icons .icon svg {
+  height: 1.25rem;
+  width: 1.25rem;
+  fill: #fff;
+}
+
+.signup {
+  text-align: center;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: rgba(156, 163, 175, 1);
+}
+
+.cross {
+  position: relative;
+  display: flex;
+  align-items: end;
+  justify-content: flex-end;
+  font-size: 1.9rem;
+  left: -5px;
+  top: -63px;
+}
+
+.cross a i {
+  color: white;
+  text-decoration: none;
+}
+
+.cross a i:hover {
+  cursor: pointer;
+  font-size: 2.2rem;
+  transform: scale(1.1);
+  color: #03fc28;
+}
+
+.fareg {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: left;
+  width: auto;
+  right: -339px;
+  top: -35px;
+  font-size: 1.45rem;
+  height: auto;
+  color: beige;
+  opacity: 0.5;
+}
+
+.checkbox {
+  height: 20px;
+  width: 20px;
+  padding: 0;
+}
+/* login form end */
+
+/*  registration form start */
+
+.form-container1 {
+  border: 2px solid black;
+  height: auto;
+  width: 55%;
+  background: #e0d5e0; /* fallback for old browsers */
+  font-size: 1.29rem;
+  color: #1da1b3;
+  font-weight: bold;
+  box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px,
+    rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px,
+    rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+  box-sizing: border-box;
+  border-radius: 25px;
+}
+
+.reg-cross {
+  top: -8px;
+  font-size: 2.46rem;
+}
+
+.btn1 {
+  position: relative;
+  font-size: 17px;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 1em 2.5em;
+  display: inline-block;
+  cursor: pointer;
+  border-radius: 6em;
+  transition: all 0.2s;
+  border: none;
+  font-family: inherit;
+  font-weight: 500;
+  color: black;
+  background-color: white;
+}
+
+.btn1:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.btn1:active {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.btn1::after {
+  content: "";
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+  border-radius: 100px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  transition: all 0.4s;
+}
+
+.btn1::after {
+  background-color: #fff;
+}
+
+.btn1:hover::after {
+  transform: scaleX(1.4) scaleY(1.6);
+  opacity: 0;
+}
+
+.form-container1 input {
+  font-size: 1.47rem;
+  font-style: italic;
+  color: #000;
+}
+/*  registration form end */
+
+
+/* change password start */
+.form-section{
+  position: relative;
+  top: 220px;
+}
+.form-containerch {
+  width: 380px;
+  height: auto;
+  background-color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  padding: 20px 30px;
+}
+
+.title {
+  text-align: center;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+        "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  margin: 35px 0 10px 0;
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-bottom: 15px;
+}
+
+.input {
+  border-radius: 20px;
+  border: 1px solid #c0c0c0;
+  outline: 0 !important;
+  box-sizing: border-box;
+  padding: 12px 15px;
+}
+
+.page-link {
+  text-decoration: underline;
+  margin: 0;
+  text-align: end;
+  color: #747474;
+  text-decoration-color: #747474;
+}
+
+.page-link-label {
+  cursor: pointer;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+        "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.page-link-label:hover {
+  color: #000;
+}
+
+.form-btn {
+  padding: 10px 15px;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+        "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  border-radius: 20px;
+  border: 0 !important;
+  outline: 0 !important;
+  background: teal;
+  color: white;
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.form-btn:active {
+  box-shadow: none;
+}
+
+
+.buttons-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-top: 20px;
+  gap: 15px;
+}
+
+
+.form-cross{
+  display: flex;
+  flex-direction: row-reverse;
+  text-decoration: none;
+  position: relative;
+  top: -75px;
+  right: -12px;
+  color: #000;
+
+}
+
+.form-cross:hover{
+  color: #03fc28;
+}
+/* change password end */

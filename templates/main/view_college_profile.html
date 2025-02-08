@@ -1,0 +1,106 @@
+{% extends "base.html" %} {% block title %} Colleges in Nepal 
+{% endblock title %} {% block contents %}
+<section class="p-5"></section>
+<section class="p-2"></section>
+<section class="starter-page-page pt-5">
+  <main class="main">
+    <!-- Page Title -->
+    <div class="page-title">
+      <nav class="breadcrumbs">
+        <div class="container">
+          <ol>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li class="current">| View Profile</li>
+          </ol>
+        </div>
+      </nav>
+    </div>
+    <!-- End Page Title -->
+  </main>
+</section>
+<section class="pt-0">
+  <div class="container bg-white shadow-sm">
+    <div class="d-flex align-items-center justify-content-center ">
+      <img
+      alt="Banner image"
+      class="img-fluid rounded-5"
+      src="{{data.college_cover.url}}"
+      width="100%"
+    /></div>
+    <div class="p-2">
+      <div class="d-flex align-items-center">
+        <img
+          src="{{data.college_profile_img.url}}"
+          alt="Logo image"
+          class="me-3"
+          height="150"
+          width="150"
+        />
+        <div>
+          <h1 class="fw-bold text-responsive fs-md-5 fs-1">
+            {{data.college_name}}
+            <i class="fas fa-check-circle text-success"> </i>
+          </h1>
+          <div
+            class="d-flex align-items-center text-muted text-responsive mt-2"
+          >
+            <i class="fas fa-map-marker-alt me-2"> </i>
+            {{data.address}}
+            <span class="mx-2"> | </span>
+            <i class="fas fa-calendar-alt me-2"> </i>
+            Estd. {{data.established_date}}
+            <span class="mx-2"> | </span>
+            <i class="fas fa-university me-2"> </i>
+            {{data.type}}
+            <span class="mx-2"> | </span>
+            <i class="fas fa-phone-alt me-2"> </i>
+            +977 {{data.phone_number}}
+          </div>
+        </div>
+      </div>
+      <div class="d-flex mt-4 gap-2">
+        <button class="btn btn-primary text-responsive">Ask Question</button>
+        <button class="btn btn-primary text-responsive">Follow</button>
+        <button class="btn btn-primary text-responsive">Write a Review</button>
+        <button class="btn btn-primary text-responsive">
+          <i class="fab fa-facebook-f"> </i>
+        </button>
+        <button class="btn btn-primary text-responsive">
+          <i class="fab fa-twitter"> </i>
+        </button>
+      </div>
+    </div>
+    <div class="p-4 border-top">
+      <h2 class="h5 fw-semibold mb-2 text-responsive">Overview</h2>
+      <p class="text-muted mb-4 text-responsive">{{data.about|safe}}</p>
+    </div>
+  </div>
+<div class="container">
+  <div class="row pt-5">
+    <h2 class="text-center text-decoration-underline">Courses Offered</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">S.N.</th>
+            <th scope="col">Course</th>
+            <th scope="col">Fee</th>
+            <th scope="col">Requirements</th>
+            <th scope="col">Duration</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in course %}
+          <tr>
+            <th scope="row">{{forloop.counter}}</th>
+            <td>{{item.courses}}</td>
+            <td>{{item.fee_structure}}</td>
+            <td>{{item.requirements_for_enroll}}</td>
+            <td>{{item.course_duration}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+{% endblock contents %}

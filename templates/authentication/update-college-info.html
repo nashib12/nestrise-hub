@@ -1,21 +1,23 @@
 {% extends "auth.html" %}
 
 {% block title %}
-  Update college info
+    Update college info
 {% endblock title %}
 
 {% block content %}
-<h1>Add College info | {{user.username}}</h1>
-<section>
-    <div class="container p-5">
+<div class="text-center pt-5 pb-2">
+    <h1 class="text-decoration-underline">Courses</h1>
+</div>
+<section class="pt-3 px-5 pb-5">
+    <div class="contaier-fluid d-flex justify-content-center">
         <div class="row">
-            <form action="{% url 'updateCollegeInfo' user.id %}" method="post">
-                {% csrf_token %}
-            
-                {{form}}
-
-                <input type="submit">
-            </form>
+            <div class="col-8">
+                    <form action="{% url 'updateCollegeInfo'%}" method="post">
+                        {% csrf_token %}
+                        {{form}}
+                        <button type="submit" class="btn btn-lg btn-info mt-3 mb-2">Submit</button>
+                    </form>
+            </div>
         </div>
     </div>
 </section>

@@ -33,3 +33,5 @@
 2025-01-15 12:51:30,669 - main.views - ERROR - 'PhoneNumber' object has no attribute 'find'
 2025-01-15 13:02:23,274 - main.views - ERROR - 'PhoneNumber' object has no attribute 'find'
 2025-01-15 13:10:53,168 - main.views - ERROR - {'phone_number': ['Enter a valid phone number for Nepal.']}
+2025-02-08 20:04:15,464 - main.views - ERROR - Reverse for 'studentProfileSetting' with no arguments not found. 1 pattern(s) tried: ['studentprofilesettings/(?P<id>[0-9]+)\\Z']
+2025-02-08 20:08:14,093 - main.views - ERROR - Reverse for 'studentProfileSetting' with no arguments not found. 1 pattern(s) tried: ['studentprofilesettings/(?P<id>[0-9]+)\\Z']

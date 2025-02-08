@@ -21,6 +21,13 @@
     <!-- Fontawesome cdn link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     
+    <!-- alertify message -->
+    <!-- CSS -->
+    <link
+      rel="stylesheet"
+      href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css"
+    />
+
     <!-- custom css files link -->
     <link rel="stylesheet" href="../static/css/auth.css">
 
@@ -36,7 +43,10 @@
 
     <!-- tel input cdn js link -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/25.2.0/build/js/intlTelInput.min.js" integrity="sha512-H0skyHW3SNpqlUsVKCM9+5ufNLLipKqvFeGapbvGlgv9RV6KulEDsRNZ7wMV7R0Hs8nMxalbJAF+d+NmNdYVYA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+    
+    <!-- Alertfiy JavaScript -->
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
+    
     <!-- custom js link -->
     <script src="../static/js/script.js"></script>
 
@@ -56,5 +66,15 @@
             this.classList.toggle('fa-eye-slash');
         });
     </script>
+
+    {% if messages %} {% for message in messages %}
+    <script>
+      var delay = alertify.get("notifier", "delay");
+      alertify.set("notifier", "delay", 5);
+      alertify.set("notifier", "position", "top-right");
+      alertify.success("{{message}}");
+      alertify.set("notifier", "delay", delay);
+    </script>
+    {% endfor %} {% endif %}
 </body>
 </html>

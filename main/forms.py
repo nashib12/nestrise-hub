@@ -1,7 +1,8 @@
 from django import forms
 from django.forms import ModelForm
+from ckeditor.widgets import CKEditorWidget
 
-from .models import StudentProfile, CollegeProfile, StudentInfo, CollegeInfo, Question
+from .models import StudentProfile, CollegeProfile, StudentInfo, CollegeInfo, Question, Application
 
 # Create forms here
 
@@ -21,12 +22,21 @@ class StudentProfileForm(forms.ModelForm):
         model = StudentProfile
         fields = ("profile_img", "date_of_birth", "gender", "phone_number", "address", "cover_image")
         widget = {
-            "profile_img" : forms.FileInput(attrs={'class' : 'form-control'}),
-            "date_of_birth" : forms.DateInput(attrs={'class' : 'form-control'}),
-            "gender" : forms.RadioSelect(attrs={'class' : 'form-control'}),
-            "phone_number" : forms.NumberInput(attrs={'class' : 'form-control', 'type':'tel', 'id':'phone'}),
-            "address" : forms.TextInput(attrs={'class' : 'form-control'}),
+            "profile_img" : forms.FileInput(attrs={'class': 'form-control'}),
+            "date_of_birth" : forms.DateInput(attrs={'class': 'form-control'}),
+            "gender" : forms.RadioSelect(attrs={'class': 'form-control'}),
+            "phone_number" : forms.TextInput(attrs={'class': 'form-control', 'type':'tel', 'id':'phone'}),
+            "address" : forms.TextInput(attrs={'class': 'form-control'}),
             "cover_image" : forms.FileInput(attrs={'class':'form-control'})
+        }
+        
+        labels = {
+            "profile_img" : "Choose your profile picture", 
+            "date_of_birth" : "Enter your date of birth", 
+            "gender" : "Choose a gender", 
+            "phone_number" : "Enter your contact no.", 
+            "address" : "Enter your full address", 
+            "cover_image" : "Choose a cover picture"
         }
     
 class StudentLoginForm(forms.Form):
@@ -35,6 +45,7 @@ class StudentLoginForm(forms.Form):
     password = forms.CharField(label="Password", widget=forms.PasswordInput(attrs={'class':'form-control' ,'id':'password'}))
     
 class CollegeProfileForm(forms.ModelForm):
+    about = forms.CharField(widget=CKEditorWidget())
     # Create college profile form here
     class Meta:
         model = CollegeProfile
@@ -43,14 +54,26 @@ class CollegeProfileForm(forms.ModelForm):
             "college_name": forms.TextInput(attrs={'class':'form-control'}),
             "established_date": forms.DateInput(attrs={'class':'form-control'}),
             "college_profile_img" : forms.FileInput(attrs={'class':'form-control'}) , 
-            "phone_number" : forms.NumberInput(attrs={'class':'form-control'}), 
+            "phone_number" : forms.TextInput(attrs={'class':'form-control'}), 
             "address" : forms.TextInput(attrs={'class':'form-control'}),
             "college_location":forms.ChoiceField(), 
             "websites" : forms.TextInput(attrs={'class':'form-control'}),
             "type" : forms.RadioSelect(attrs={'class': 'form_control'}),
             "college_cover" : forms.FileInput(attrs={'class':'form-control'}),
-            "about" : forms.Textarea(attrs={'class':'form-control'})
-            }        
+            }     
+        
+        labels = {
+            "college_name" : "Enter college name",
+            "established_date" : "Enter established date", 
+            "college_profile_img" : "Choose a college profile image" , 
+            "phone_number" : "Enter contact info", 
+            "address" : "Enter full address", 
+            "college_location" : "Enter college location", 
+            "websites" : "Enter your website", 
+            "type" : "Choose college type", 
+            "college_cover" : "Choose a cover image" ,
+            "about" : "About"
+        }   
 
 class CollegeRegistrationForm(forms.Form):
     #Create college registration form field
@@ -101,3 +124,11 @@ class VerbalTestForm(forms.Form):
                 required=True
             )
             
+class ApplicationForm(forms.ModelForm):
+    class Meta:
+        model = Application
+        fields = {"contact", "course"}
+        widget = {
+           "contact" : forms.TextInput(),
+           "course" : forms.ChoiceField()
+        }

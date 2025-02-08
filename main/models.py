@@ -3,6 +3,7 @@ import phonenumbers
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
+from ckeditor.fields import RichTextField
 
 # Create your models here.
 
@@ -93,8 +94,8 @@ class CollegeProfile(models.Model):
     college_location = models.ForeignKey(CollegeLocation, on_delete=models.CASCADE, blank=True, null=True)
     websites = models.URLField(null=True, max_length=200)
     type = models.CharField(null=True, choices=college_type, max_length=20)
-    college_cover = models.ImageField(upload_to="college profle cover", blank=True)
-    about = models.TextField(null=True)
+    college_cover = models.ImageField(upload_to="college profle cover", default="../static/images/profile-white.jpg")
+    about = RichTextField(default="")
     
     class Meta:
         db_table = 'College Profile'
@@ -153,7 +154,7 @@ class CollegeInfo(models.Model):
         verbose_name_plural = 'CollegeInfos'
         
     def __str__(self):
-        return self.college_name.username
+        return self.courses
 
 class TestResult(models.Model):
     user_name = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -208,3 +209,55 @@ class Options(models.Model):
     def __str__(self):
         return self.text
     
+class Application(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    contact = models.CharField(max_length=15)
+    course = models.ForeignKey(CollegeInfo, on_delete=models.CASCADE)
+    test_score = models.CharField(max_length=100)
+    application_status = models.CharField(max_length=50, default= "Pending")
+    submitted_date = models.DateField(auto_now_add=True)
+    college_name = models.IntegerField()
+    
+    class Meta:
+        db_table = 'Application List'
+        managed = True
+        verbose_name = 'Application'
+        verbose_name_plural = 'Applications' 
+    
+        
+    def clean_phone_number(self):
+        # Validate phone number for the Nepal region
+        if self.contact:
+            try:
+                parsed_number = phonenumbers.parse(self.contact, "NP") 
+                if not phonenumbers.is_valid_number(parsed_number):
+                    raise ValidationError({"phone_number": "Enter a valid phone number for Nepal."})
+            except phonenumbers.NumberParseException:
+                raise ValidationError({"phone_number": "Enter a valid phone number format."})
+
+    def save(self, *args, **kwargs):
+        self.clean_phone_number()
+        super().save()
+        
+class Gallery(models.Model):
+    image = models.ImageField(upload_to="gallery img")
+    image_title = models.CharField(max_length=100)
+    image_desc = models.CharField(max_length=200)
+    
+    class Meta:
+        db_table = 'Gallery'
+        managed = True
+        verbose_name = 'Image'
+        verbose_name_plural = 'Images'
+        
+class Faqs(models.Model):
+    faq_question = models.CharField(max_length=100)
+    faq_answer = models.CharField(max_length=200)
+    
+    class Meta:
+        db_table = 'FAQs'
+        managed = True
+        verbose_name = 'Faq'
+        verbose_name_plural = 'Faqs'
