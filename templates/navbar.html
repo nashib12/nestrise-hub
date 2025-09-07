@@ -1,0 +1,62 @@
+  {% load static %}
+  {% load my_filters %}
+  <header id="header" class="header d-flex align-items-center sticky-top">
+    <div class="header-container container-fluid container-xl position-relative d-flex align-items-center justify-content-end">
+
+      <a href="{% url 'home' %}" class="logo d-flex align-items-center me-auto">
+        <img src="{% static 'img/logo.png' %}" alt="">
+      </a>
+
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="{% url 'home' %}" class="active">Home</a></li>
+          <li class="dropdown"><a href="#"><span>About</span></a>
+            <ul>
+              <li><a href="#">About Us</a></li>
+              <li><a href="#">Admissions</a></li>
+              <li><a href="#">Academics</a></li>
+            </ul>
+          </li>
+          <li><a href="#">News</a></li>
+          <li><a href="#">Events</a></li>
+          <li class="dropdown"><a href="#"><span>Colleges</span></a>
+            <ul>
+              <li><a href="#">Colleges in Nepal</a></li>
+              <li><a href="#">Colleges in Abroad</a></li>
+            </ul>
+          </li>
+          
+          <li><a href="#">Contact</a></li>
+
+         {% if request.user.is_authenticated %}
+            {% if request.user|has_group:'STUDENT' %}
+              <li class="dropdown"><a href="#"><span>Account</span></a>
+                <ul>
+                  <li><a href="{% url 'studentProfile' user.id %}">View Profile</a></li>
+                  <li><a href="{% url 'studentProfileSetting' %}">Profile Settings</a></li>
+                  <li><a href="{% url 'educationLevel' user.id %}">Add Education Info</a></li>
+                  <li><a href="{% url 'changePasswordStudent'%}">Change Password</a></li>
+                  <li ><a class="fs-5" href="{% url 'studentLogout' %}">Log Out</a></li>
+                </ul>
+              </li>
+              {% elif request.user|has_group:'COLLEGE' %}
+              <li class="dropdown"><a href="#"><span>Account</span></a>
+                <ul>
+                  <li><a href="{% url 'collegeProfile' user.id %}">View Profile</a></li>
+                  <li><a href="{% url 'collegeProfileSetting' %}">Profile Settings</a></li>
+                  <li><a href="{% url 'collegeInfo' %}">Add Courses</a></li>
+                  <li><a href="{% url 'changePasswordCollege' %}">Change Password</a></li>
+                  <li ><a class="fs-5" href="{% url 'collegeLogout' %}">Log Out</a></li>
+                </ul>
+              </li>
+            {% endif %}
+          {% else %}
+            <a class="btn btn-md btn-light fs-5 text-primary flex-md-shrink-0 rounded-3 border border-2 border-dark px-4 py-2" href="{% url 'selection' %}">Log In</a>
+          {% endif %}
+
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+
+    </div>
+  </header>

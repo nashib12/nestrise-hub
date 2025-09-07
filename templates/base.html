@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 {% load my_filters %}
 <html lang="en">
 
@@ -14,7 +15,7 @@
   <meta name="keywords" content="">
 
   <!-- Favicons -->
-  <link href="../static/img/favicon.ico" rel="icon">
+  <link href="{%static 'img/favicon.ico' %}" rel="icon">
 
   
   <!-- Fonts -->
@@ -22,12 +23,13 @@
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
-  <!-- Font awesome cdn link -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <!-- Bootstrap cdn css link -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 
+  <!-- Font awesome cdn link -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />    
+  
   <!-- Vendor CSS Files -->
-  <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="../static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
   <link href="../static/vendor/aos/aos.css" rel="stylesheet">
   <link href="../static/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
   <link href="../static/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
@@ -35,152 +37,30 @@
   <!-- alertify message -->
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css">
 
-  <!-- Main CSS File -->
-  <link href="../static/css/main.css" rel="stylesheet">
+  <!-- custom css file -->
+  <link href="{% static 'css/main.css' %}" rel="stylesheet">
 
-  <!-- =======================================================
-  * Template Name: FlexStart
-  * Template URL: https://bootstrapmade.com/flexstart-bootstrap-startup-template/
-  * Updated: Nov 01 2024 with Bootstrap v5.3.3
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
+  <!-- Bootstrap cdn js link -->
+  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
+  <!-- cutsom js file -->
+   <script defer src="{% static 'js/main.js' %}"></script>
 </head>
 
-<body class="index-page">
+<body>
 
-  <header id="header" class="header d-flex align-items-center fixed-top">
-    <div class="container-fluid container-xl position-relative d-flex align-items-center">
-
-      <a href="{% url 'home' %}" class="logo d-flex align-items-center me-auto">
-        <img src="../static/img/logo.png" alt="">
-      </a>
-
-      <nav id="navmenu" class="navmenu">
-        <ul>
-          <li><a href="{% url 'home' %}" class="active">Home<br></a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#services">Services</a></li>
-          <li><a href="#gallery">Gallery</a></li>
-          <li><a href="#blog">Blog</a></li>
-          <li><a href="#contact">Contact</a></li>
-          <li><a href="{% url 'locationSelection' %}">College</a></li>
-          {% if request.user.is_authenticated %}
-            {% if request.user|has_group:'STUDENT' %}
-              <li class="dropdown">{{request.user.first_name}}<i class="bi bi-chevron-down toggle-dropdown"></i>
-                <ul>
-                  <li><a href="{% url 'studentProfile' user.id %}">View Profile</a></li>
-                  <li><a href="{% url 'studentProfileSetting' %}">Profile Settings</a></li>
-                  <li><a href="{% url 'educationLevel' user.id %}">Add Education Info</a></li>
-                  <li><a href="{% url 'changePasswordStudent'%}">Change Password</a></li>
-                  <li ><a class="fs-5" href="{% url 'studentLogout' %}">Log Out</a></li>
-                </ul>
-              </li>
-              {% elif request.user|has_group:'COLLEGE' %}
-              <li class="dropdown">{{request.user.username}}<i class="bi bi-chevron-down toggle-dropdown"></i>
-                <ul>
-                  <li><a href="{% url 'collegeProfile' user.id %}">View Profile</a></li>
-                  <li><a href="{% url 'collegeProfileSetting' %}">Profile Settings</a></li>
-                  <li><a href="{% url 'collegeInfo' %}">Add Courses</a></li>
-                  <li><a href="{% url 'changePasswordCollege' %}">Change Password</a></li>
-                  <li ><a class="fs-5" href="{% url 'collegeLogout' %}">Log Out</a></li>
-                </ul>
-              </li>
-            {% endif %}
-          {% else %}
-            <a class="btn-getstarted flex-md-shrink-0" href="{% url 'selection' %}">Log In | Sign Up</a>
-          {% endif %}
-        </ul>
-        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-      </nav>    
-    </div> 
-  </header>
-
+  {% include "navbar.html" %}
+  
   {% block contents %}
       
   {% endblock contents %}
 
-  <footer id="footer" class="footer">
-
-    <div class="footer-newsletter">
-      <div class="container">
-        <div class="row justify-content-center text-center">
-          <div class="col-lg-6">
-            <h4>Join Our Newsletter</h4>
-            <p>Subscribe to our newsletter and receive the latest news about colleges and career</p>
-            <form action="" method="post">
-              <div class="newsletter-form"><input type="email" name="email"><input type="submit" value="Subscribe"></div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="container footer-top">
-      <div class="row gy-4">
-        <div class="col-lg-4 col-md-6 footer-about">
-          <a href="index.html" class="d-flex align-items-center">
-            <span class="sitename">NestRise HUB</span>
-          </a>
-          <div class="footer-contact pt-3">
-            <p>A108 Adam Street</p>
-            <p>New York, NY 535022</p>
-            <p class="mt-3"><strong>Phone:</strong> <span>+977 984-0700086</span></p>
-            <p><strong>Email:</strong> <span>info@example.com</span></p>
-          </div>
-        </div>
-
-        <div class="col-lg-2 col-md-3 footer-links">
-          <h4>Useful Links</h4>
-          <ul>
-            <li><i class="bi bi-chevron-right"></i> <a href="#">Home</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="#">About us</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="#">Services</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="#">Terms of service</a></li>
-          </ul>
-        </div>
-
-        <div class="col-lg-2 col-md-3 footer-links">
-          <h4>Our Services</h4>
-          <ul>
-            <li><i class="bi bi-chevron-right"></i> <a href="#">Career Counselling</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="#">Education Counselling</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="#">Housing Marketing</a></li>
-          </ul>
-        </div>
-
-        <div class="col-lg-4 col-md-12">
-          <h4>Follow Us</h4>
-          <p>On our Different Social Media Accounts</p>
-          <div class="social-links d-flex">
-            <a href=""><i class="bi bi-twitter-x"></i></a>
-            <a href=""><i class="bi bi-facebook"></i></a>
-            <a href=""><i class="bi bi-instagram"></i></a>
-            <a href=""><i class="bi bi-linkedin"></i></a>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <div class="container copyright text-center mt-4">
-      <p>© <span>Copyright</span> <strong class="px-1 sitename">NestRise HUB</strong> <span>All Rights Reserved</span></p>
-      <div class="credits">
-        <!-- All the links in the footer should remain intact. -->
-        <!-- You can delete the links only if you've purchased the pro version. -->
-        <!-- Licensing information: https://bootstrapmade.com/license/ -->
-        <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
-        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a> Distributed by <a href=“https://themewagon.com>ThemeWagon
-      </div>
-    </div>
-  </footer>
+  {% include "footer.html" %}
 
   <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="fa-solid fa-arrow-up-from-bracket"></i></a>
 
   <!-- Vendor JS Files -->
-  <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="../static/vendor/php-email-form/validate.js"></script>
   <script src="../static/vendor/aos/aos.js"></script>
   <script src="../static/vendor/glightbox/js/glightbox.min.js"></script>
   <script src="../static/vendor/purecounter/purecounter_vanilla.js"></script>
@@ -190,9 +70,6 @@
   
   <!-- Alertfiy JavaScript -->
   <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
-
-  <!-- Main JS File -->
-  <script src="../static/js/main.js"></script>
 
   {% if messages %} {% for message in messages %}
   <script>

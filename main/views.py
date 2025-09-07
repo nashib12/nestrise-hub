@@ -21,10 +21,7 @@ from .utils import fetch_categories, fetch_questions
 # get the logger name 
 logger = logging.getLogger(__name__)
 
-# Create your views here.
-
 def home(request):
-    # Create landing pages views here
     gallery = Gallery.objects.all()
     faqs = Faqs.objects.all()
     
@@ -50,7 +47,7 @@ def collegeNepal(request):
     location = CollegeLocation.objects.all()
 
     
-    paginator = Paginator(college_data, 6)
+    paginator = Paginator(college_data, 1)
     page_num = request.GET.get('page')
     data = paginator.get_page(page_num)
     total_page = data.paginator.num_pages
@@ -103,7 +100,6 @@ def studentRegister(request):
             password = form.cleaned_data["password"]
             confirm_password = form.cleaned_data["confirm_password"]
             
-            #compare the user input password and confirm password
             if password == confirm_password:
                 try:
                     validate_password(password)
@@ -143,7 +139,6 @@ def studentRegister(request):
                     
     return render(request, "./authentication/student-register.html", {"form" : form})
 
-#login the student and redirect to main page
 def studentLogin(request):
     form = StudentLoginForm()
     
@@ -166,15 +161,13 @@ def studentLogin(request):
                 login(request, user_login)
                 return redirect("home")
     return render(request, "./authentication/student-login.html", {"form":form})
-
-#student logout 
+ 
 @login_required(login_url="studentLogin")
 @allowed_users(allowed_roles=["STUDENT"])
 def studentLogout(request):
     logout(request)
     return redirect("studentLogin")
                        
-#Update student profile after successfuly creating student profile
 @login_required(login_url="studentLogin")
 @allowed_users(allowed_roles=["STUDENT"])
 def studentProfileSetting(request):
@@ -189,7 +182,6 @@ def studentProfileSetting(request):
     
     return render(request, "./authentication/student-profile-settings.html", context)
     
-#Update student profile and save it to database
 @login_required(login_url="studentLogin")
 @allowed_users(allowed_roles=["STUDENT"])
 def updateStudentProfile(request, id):
@@ -210,8 +202,7 @@ def updateStudentProfile(request, id):
         logger.error(str(e))
         messages.error(request, str(e))
         return redirect("studentProfileSetting")
-    
-#change the password for student
+
 @login_required(login_url="studentLogin")
 @allowed_users(allowed_roles=["STUDENT"])
 def change_password_student(request):
@@ -235,7 +226,6 @@ def change_password_student(request):
             
     return render(request, "./authentication/change-password-student.html", {'form':form})
   
-#add the additional student info here
 @login_required(login_url="studentLogin")
 @allowed_users(allowed_roles=["STUDENT"])
 def educationLevel(request, id):
@@ -250,7 +240,6 @@ def educationLevel(request, id):
 
     return render(request, "./authentication/update-student-edu.html", context)
 
-#update the additional student info here
 @login_required(login_url="studentLogin")
 @allowed_users(allowed_roles=["STUDENT"])
 def updateEducationLevel(request, id):
@@ -424,10 +413,6 @@ def change_password_college(request):
 @login_required(login_url="collegeLogin")
 @allowed_users(allowed_roles=["COLLEGE"])
 def collegeInfo(request):
-    # try:
-    #     college_data = CollegeInfo.objects.get(college_name_id=id)
-    #     form = CollegeInfoForm(instance=college_data)
-    # except CollegeInfo.DoesNotExist:
     form = CollegeInfoForm()
         
     context = {
@@ -440,14 +425,6 @@ def collegeInfo(request):
 @login_required(login_url="collegeLogin")
 @allowed_users(allowed_roles=["COLLEGE"])
 def updateCollegeInfo(request):
-    # try:
-    #     college_data = CollegeInfo.objects.get(college_name_id = id)
-    #     if request.method == "POST":
-    #         form = CollegeInfoForm(request.POST, instance= college_data)
-    #         if form.is_valid():
-    #             form.save()
-    #             return redirect("home")
-    # except CollegeInfo.DoesNotExist:
         if request.method == "POST":
             form = CollegeInfoForm(request.POST)
             if form.is_valid():
@@ -457,28 +434,11 @@ def updateCollegeInfo(request):
                 messages.success(request, "Successfully added")
                 return redirect("collegeProfile")
 
-# #get college info 
-# @login_required(login_url="collegeLogin")
-# @allowed_users(allowed_roles=["COLLEGE"])
-# def editCollegeInfo(request, id):
-#     college_data = CollegeInfo.objects.get(id=id)
-#     form = CollegeInfoForm(instance=college_data)
-    
-#     return render(request, "./authentication/edit_college_info.html", {"form":form})
-
-#edit college info and save it to database
 class UpdateCollege(UpdateView):
     template_name = "./authentication/edit_college_info.html"
     model = CollegeInfo
     form_class = CollegeInfoForm
     success_url = "/"
-# def editedCollegeInfo(request, id):
-#     if request.method == "POST":
-#         college_data = CollegeInfo.objects.get(id = id)
-#         form = CollegeInfoForm(request.POST, instance= college_data)
-#         if form.is_valid():
-#             form.save()
-            # return redirect("home")
             
 class DeleteCollege(DeleteView):
     template_name = "./authentication/collegeinfo_confirm_delete.html"
@@ -583,11 +543,8 @@ def verbalTestCheck(request):
 @login_required(login_url="studentLogin")
 @allowed_users(allowed_roles=["STUDENT"])
 def application(request, id):
-    # courses = CollegeInfo.objects.filter(college_name_id = id)
-    # return HttpResponse(courses)
     form = ApplicationForm()
     college_id = id
-    # return HttpResponse(f"College name = {college_id}")
     context = {
         "form": form,
         "college_id" : college_id
