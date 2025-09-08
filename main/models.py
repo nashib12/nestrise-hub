@@ -261,3 +261,75 @@ class Faqs(models.Model):
         managed = True
         verbose_name = 'Faq'
         verbose_name_plural = 'Faqs'
+        
+class Testimonial(models.Model):
+    tes_img = models.ImageField(upload_to="testimonial/")
+    tes_name = models.CharField(max_length=100)
+    tes_message = models.TextField()
+    tes_title = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        db_table = 'Testimonials'
+        managed = True
+        verbose_name = 'Testimonial'
+        verbose_name_plural = 'Testimonials'
+        ordering = ['-created_at']
+        
+class NewsCategory(models.Model):
+    category = models.CharField(max_length=20)
+    
+    class Meta:
+        db_table = 'News Category'
+        managed = True
+    
+    def __str__(self):
+        return self.category
+    
+class EventCategory(models.Model):
+    category = models.CharField(max_length=20)
+    
+    class Meta:
+        db_table = 'Events Category'
+        managed = True
+    
+    def __str__(self):
+        return self.category
+    
+class New(models.Model):
+    category = models.ForeignKey(NewsCategory, on_delete=models.CASCADE, related_name="news")
+    news_title = models.CharField(max_length=50)
+    news_description = RichTextField()
+    author = models.CharField(max_length=50)
+    author_img = models.ImageField(upload_to="news/author/", blank=True, null=True)
+    news_img = models.ImageField(upload_to="news/images/")
+    date = models.DateField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_approved = models.BooleanField(default=True)
+    
+    class Mets:
+        db_table = "News"
+        managed = True
+        ordering = ['-created_at']
+    
+    def __str__(self):
+        return self.news_title
+    
+class Event(models.Model):
+    category = models.ForeignKey(EventCategory, on_delete=models.CASCADE, related_name="events")
+    event_title = models.CharField(max_length=50)
+    event_description = RichTextField()
+    organizer = models.CharField(max_length=50)
+    poster = models.ImageField(upload_to="events/")
+    location = models.CharField(max_length=150)
+    event_date = models.DateField()
+    event_time = models.TimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_approved = models.BooleanField(default=True)
+    
+    class Meta:
+        db_table = "Events"
+        managed = True
+    
+    def __str__(self):
+        return self.event_title    

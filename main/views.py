@@ -22,17 +22,27 @@ from .utils import fetch_categories, fetch_questions
 logger = logging.getLogger(__name__)
 
 def home(request):
-    gallery = Gallery.objects.all()
-    faqs = Faqs.objects.all()
+    # gallery = Gallery.objects.all()
+    # faqs = Faqs.objects.all()
+    testimonila = Testimonial.objects.all()
+    news = New.objects.filter(is_approved=True).order_by('date')[ :2]
+    event_cat = EventCategory.objects.all()
+  
+    cate_id = request.GET.get('cat_id')
+    if cate_id:
+        events = Event.objects.filter(id=cate_id, is_approved=True)
+    else:
+        events = Event.objects.filter(is_approved=True)
     
     context = {
-        "gallery" : gallery,
-        "question" : faqs
+        # "gallery" : gallery,
+        # "question" : faqs,
+        "testimonials" : testimonila,
+        "news" : news,
+        "events" : events,
+        "cat" : event_cat,
     }
     return render(request, "main/index.html", context)
-
-def locationSelection(request):
-    return render(request, "main/location_selection.html")
 
 def collegeAbroad(request):
     return render(request, "main/404.html")
@@ -43,23 +53,20 @@ def collegeNepal(request):
         college_data = CollegeProfile.objects.filter(college_location_id = college_location)
     else:
         college_data = CollegeProfile.objects.all()
-    course_data = CollegeInfo.objects.all()
     location = CollegeLocation.objects.all()
-
     
-    paginator = Paginator(college_data, 1)
+    paginator = Paginator(college_data, 6)
     page_num = request.GET.get('page')
     data = paginator.get_page(page_num)
     total_page = data.paginator.num_pages
      
     context = {
         "college_data" : data,
-        "course_data" : course_data,
         "num" : [n+1 for n in range(total_page)],
         "location" : location
     }
     
-    return render(request, "main/colleges_Nepal.html", context)
+    return render(request, "main/colleges_in_Nepal.html", context)
 
 @login_required(login_url="studentLogin")
 @allowed_users(allowed_roles=["STUDENT"])

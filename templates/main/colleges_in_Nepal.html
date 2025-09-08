@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% load static %}
+{% load my_filters %}
+{% block title %}
+  Colleges in Nepal
+{% endblock title %}
+
+{% block contents %}
+    <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title light-background">
+      <div class="container d-lg-flex justify-content-between align-items-center">
+        <h1 class="mb-2 mb-lg-0">Colleges in Nepal</h1>
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li class="current">Colleges in Nepal</li>
+          </ol>
+        </nav>
+      </div>
+    </div><!-- End Page Title -->
+
+    <!-- Faculty  Staff Section -->
+    <section id="faculty--staff" class="faculty--staff section">
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row mb-5">
+          <div class="col-lg-8 mx-auto">
+            <div class="faculty-search">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search colloges by name or locations...">
+                <button class="search-btn rounded-2" type="button">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+              </div>
+              <div class="search-filters mt-3 d-flex flex-wrap">
+                <div class="filter-item"><a href="?location=">All</a></div>
+                {% for item in location %}
+                  <div class="filter-item"><a href="?location={{item.id}}">{{item.location}}</a></div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="faculty-grid">
+          <div class="row g-4">
+            <!-- College-->
+             {% for data in college_data %}
+              <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="faculty-card">
+                  <div class="faculty-image">
+                    {% if data.college_profile_img %}
+                      <img src="{{ data.college_profile_img.url }}" class="img-fluid" alt="College Profile">
+                    {% else %}
+                      <img src="{% static 'img/person/person-m-3.webp' %}" class="img-fluid" alt="College Profile">
+                    {% endif %}
+                  </div>
+                  <div class="faculty-info">
+                    <h3>{{ data.college_name }}</h3>
+                    <div class="research-tags">
+                      <span>{{ data.type }}</span>
+                    </div>
+                    <p class="position"><i class="fa-solid fa-phone"></i> {{ data.phone_number }}</p>
+                    <div class="department"><i class="fa-solid fa-location-pin"></i> {{ data.address }}</div>
+                    <a href="{% url 'viewCollegeProfile' data.id %}" class="profile-link">View College Details</a>
+                  </div>
+                </div>
+              </div>   
+             {% endfor %}
+            <!-- End College --> 
+
+        <!-- Pagination Section -->
+        <section id="pagination" class="pagination section">
+
+          <div class="container">
+            <nav class="d-flex justify-content-center" aria-label="Page navigation">
+              <ul>
+                {% if college_data.has_previous %}
+                  <li>
+                      <a href="?page={{college_data.previous_page_number}}" aria-label="Previous page">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        <span class="d-none d-sm-inline">Previous</span>
+                      </a>
+                  </li>
+                {% endif %}
+                {% for n in num %}
+                  <li class="page-item"><a class="page-link" href="?page={{n}}">{{n}}</a></li>
+                {% endfor %}
+                {% if college_data.has_next %}
+                <li>
+                    <a href="?page={{college_data.next_page_number}}" aria-label="Next page">
+                      <span class="d-none d-sm-inline">Next</span>
+                      <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                  </li>
+                {% endif %}
+
+              </ul>
+            </nav>
+          </div>
+
+        </section><!-- /Pagination Section -->
+
+      </div>
+
+    </section><!-- /Faculty  Staff Section -->
+
+  </main>
+{% endblock contents %}

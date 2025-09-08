@@ -15,7 +15,6 @@ from .views import *
 
 urlpatterns = [
     path("",home,name="home"), 
-    path("locationselection/",locationSelection, name="locationSelection"),
     path("collegeAbroad/", collegeAbroad, name="collegeAbroad"),
     path("collegeNepal/", collegeNepal, name="collegeNepal"),
     path("studentProfile/<int:id>", studentProfile, name="studentProfile"),
