@@ -8,7 +8,6 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import PasswordChangeForm
 from django.views.generic import UpdateView, DeleteView
 from django.core.paginator import Paginator
 from django.contrib import messages
@@ -169,9 +168,7 @@ def studentLogin(request):
                 return redirect("home")
     return render(request, "./authentication/student-login.html", {"form":form})
  
-@login_required(login_url="studentLogin")
-@allowed_users(allowed_roles=["STUDENT"])
-def studentLogout(request):
+def log_out(request):
     logout(request)
     return redirect("studentLogin")
                        
@@ -213,10 +210,10 @@ def updateStudentProfile(request, id):
 @login_required(login_url="studentLogin")
 @allowed_users(allowed_roles=["STUDENT"])
 def change_password_student(request):
-    form = PasswordChangeForm(user=request.user)
+    form = CustomPasswordChangeForm(user=request.user)
     
     if request.method == "POST":
-        form = PasswordChangeForm(user=request.user, data=request.POST)
+        form = CustomPasswordChangeForm(user=request.user, data=request.POST)
         try:   
             if form.is_valid():
                 form.save()
@@ -348,14 +345,7 @@ def collegeLogin(request):
                
     return render(request, "./authentication/college-login.html", {"form":form})
 
-#student logout 
-@login_required(login_url="collegeLogin")
-@allowed_users(allowed_roles=["COLLEGE"])
-def collegeLogout(request):
-    logout(request)
-    return redirect("collegeLogin")
-
-#Update student profile after successfuly creating student profile
+#Update college profile after successfuly creating college profile
 @login_required(login_url="collegeLogin")
 @allowed_users(allowed_roles=["COLLEGE"])
 def collegeProfileSetting(request):
@@ -396,10 +386,10 @@ def updateCollegeProfile(request, id):
 @login_required(login_url="collegeLogin")
 @allowed_users(allowed_roles=["COLLEGE"])
 def change_password_college(request):
-    form = PasswordChangeForm(user=request.user)
+    form = CustomPasswordChangeForm(user=request.user)
     
     if request.method == "POST":
-        form = PasswordChangeForm(user=request.user, data=request.POST)
+        form = CustomPasswordChangeForm(user=request.user, data=request.POST)
         try:   
             if form.is_valid():
                 form.save()

@@ -15,8 +15,8 @@ from .views import *
 
 urlpatterns = [
     path("",home,name="home"), 
-    path("collegeAbroad/", collegeAbroad, name="collegeAbroad"),
-    path("collegeNepal/", collegeNepal, name="collegeNepal"),
+    path("college/collegeAbroad/", collegeAbroad, name="collegeAbroad"),
+    path("college/collegeNepal/", collegeNepal, name="collegeNepal"),
     path("studentProfile/<int:id>", studentProfile, name="studentProfile"),
     path("collegeProfile/<int:id>", collegeProfile, name="collegeProfile"),
     # ----------------------------- authentication -----------------------------
@@ -24,7 +24,7 @@ urlpatterns = [
     # ----------- student authentication section ----------- 
     path("registration/", studentRegister, name="studentRegister"),
     path("studentlogin/",studentLogin,name="studentLogin"),
-    path("studentlogout/",studentLogout,name="studentLogout"),
+    path("studentlogout/",log_out,name="log-out"),
     path("studentprofilesettings/",studentProfileSetting,name="studentProfileSetting"),
     path("studentprofileupdate/<int:id>/",updateStudentProfile,name="studentProfileUpdate"),
     path("change_password_college/", change_password_student, name="changePasswordStudent"),
@@ -34,7 +34,6 @@ urlpatterns = [
     # ----------- college authentication section ----------- 
     path("collegeregistration/", collegeRegister, name="collegeRegister"),
     path("collegelogin/",collegeLogin,name="collegeLogin"),
-    path("collegelogout/",collegeLogout,name="collegeLogout"),
     path("collegeprofilesettings/",collegeProfileSetting,name="collegeProfileSetting"),
     path("collegeprofileupdate/<int:id>/",updateCollegeProfile,name="collegeProfileUpdate"),
     path("changepasswordcollege/", change_password_college, name="changePasswordCollege"),

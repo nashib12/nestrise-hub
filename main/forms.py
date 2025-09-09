@@ -1,6 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 from ckeditor.widgets import CKEditorWidget
+from django.contrib.auth.forms import PasswordChangeForm
 
 from .models import StudentProfile, CollegeProfile, StudentInfo, CollegeInfo, Question, Application
 
@@ -21,24 +22,24 @@ class StudentProfileForm(forms.ModelForm):
     class Meta:
         model = StudentProfile
         fields = ("profile_img", "date_of_birth", "gender", "phone_number", "address", "cover_image")
-        widget = {
-            "profile_img" : forms.FileInput(attrs={'class': 'form-control'}),
-            "date_of_birth" : forms.DateInput(attrs={'class': 'form-control'}),
-            "gender" : forms.RadioSelect(attrs={'class': 'form-control'}),
-            "phone_number" : forms.TextInput(attrs={'class': 'form-control', 'type':'tel', 'id':'phone'}),
-            "address" : forms.TextInput(attrs={'class': 'form-control'}),
-            "cover_image" : forms.FileInput(attrs={'class':'form-control'})
+        widgets = {
+            "profile_img" : forms.FileInput(attrs={'class': 'form-control fs-5' ,'id' : 'image', 'type' : 'file'}),
+            "date_of_birth" : forms.DateInput(attrs={'class': 'form-control fs-5', 'id' : 'dob' ,'type' : 'date'}),
+            "gender" : forms.Select(attrs={'class': 'form-control fs-5', 'id' : 'gender'}),
+            "phone_number" : forms.TextInput(attrs={'class': 'form-control fs-5', 'type':'tel', 'id':'phone'}),
+            "address" : forms.TextInput(attrs={'class': 'form-control fs-5', 'id' : 'address'}),
+            "cover_image" : forms.FileInput(attrs={'class':'form-control fs-5', 'id' : 'cover_img', 'type' : 'file'})
         }
         
         labels = {
-            "profile_img" : "Choose your profile picture", 
-            "date_of_birth" : "Enter your date of birth", 
-            "gender" : "Choose a gender", 
-            "phone_number" : "Enter your contact no.", 
-            "address" : "Enter your full address", 
-            "cover_image" : "Choose a cover picture"
+            "profile_img" : "", 
+            "date_of_birth" : "", 
+            "gender" : "", 
+            "phone_number" : "", 
+            "address" : "", 
+            "cover_image" : ""
         }
-    
+        
 class StudentLoginForm(forms.Form):
     # Create student login form here
     username = forms.CharField(label="Username", widget=forms.TextInput(attrs={'class':'form-control'}))
@@ -50,7 +51,7 @@ class CollegeProfileForm(forms.ModelForm):
     class Meta:
         model = CollegeProfile
         fields = ("college_name","established_date", "college_profile_img" , "phone_number", "address", "college_location", "websites", "type", "college_cover" ,"about")
-        widget = {
+        widgets = {
             "college_name": forms.TextInput(attrs={'class':'form-control'}),
             "established_date": forms.DateInput(attrs={'class':'form-control'}),
             "college_profile_img" : forms.FileInput(attrs={'class':'form-control'}) , 
@@ -92,11 +93,17 @@ class StudentInfoForm(forms.ModelForm):
     class Meta:
         model = StudentInfo
         fields = ("education_level", "passed_year", "gpa", "grade")
-        widget = {
-            "education_level": forms.RadioSelect(attrs={'class':'form-control'}),
-            "passed_year": forms.DateInput(attrs={'class':'form-control', 'type':'date'}),
-            "gpa": forms.TextInput(attrs={'class':'form-control'}),
-            "grade": forms.RadioSelect(attrs={'class':'from-control'})
+        labels = {
+            'education_level' : '',
+            'passed_year' : '',
+            'gpa' : '',
+            'grade' : '',
+        }
+        widgets = {
+            "education_level": forms.Select(attrs={'class':'form-control fs-5', 'id' : 'level'}),
+            "passed_year": forms.DateInput(attrs={'class':'form-control fs-5', 'id' : 'year', 'type':'date'}),
+            "gpa": forms.TextInput(attrs={'class':'form-control fs-5' , 'id' : 'gpa'}),
+            "grade": forms.TextInput(attrs={'class':'form-control fs-5', 'id' : 'grade'}),
         }
         
 class CollegeInfoForm(forms.ModelForm):
@@ -104,7 +111,7 @@ class CollegeInfoForm(forms.ModelForm):
     class Meta:
         model = CollegeInfo
         fields = ("courses", "fee_structure", "requirements_for_enroll", "course_duration")
-        widget = {
+        widgets = {
             "courses": forms.TextInput(attrs={'class':'form-control'}),
             "fee_structure": forms.NumberInput(attrs={'class':'form-control'}),
             "requriements_for_enroll": forms.TextInput(attrs={'class':'form-control'}),
@@ -120,15 +127,40 @@ class VerbalTestForm(forms.Form):
             self.fields[f"question_{question.id}"] = forms.ChoiceField(
                 label=question.questions,
                 choices=[(option.id, option.text) for option in question.options.all()],
-                widget=forms.RadioSelect,
+                widgets=forms.RadioSelect,
                 required=True
             )
             
 class ApplicationForm(forms.ModelForm):
     class Meta:
         model = Application
-        fields = {"contact", "course"}
-        widget = {
-           "contact" : forms.TextInput(),
-           "course" : forms.ChoiceField()
+        fields = {'contact', 'course'}
+        labels = {
+            'contact' : '',
+            'course' : '',
         }
+        
+        widgetss = {
+           'contact' : forms.TextInput(attrs={'class' : 'form-control fs-5', 'id' : 'contact'}),
+           'course' : forms.Select(attrs={'class' : 'form-control fs-5', 'id' : 'course'}),
+        }
+        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['course'].empty_label = "Select a course"
+        
+class CustomPasswordChangeForm(PasswordChangeForm):
+    def __init__(self, *args, **kwargs):
+        super(CustomPasswordChangeForm, self).__init__(*args, **kwargs)
+        
+        self.fields['old_password'].label = ''
+        self.fields['old_password'].widget.attrs['class'] = 'form-control fs-4'
+        self.fields['old_password'].widget.attrs['id'] = 'old_password'
+        
+        self.fields['new_password1'].label = ''
+        self.fields['new_password1'].widget.attrs['class'] = 'form-control fs-4'
+        self.fields['new_password1'].widget.attrs['id'] = 'password1'
+        
+        self.fields['new_password2'].label = ''
+        self.fields['new_password2'].widget.attrs['class'] = 'form-control fs-4'
+        self.fields['new_password2'].widget.attrs['id'] = 'password2'

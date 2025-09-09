@@ -38,7 +38,7 @@ class StudentProfile(models.Model):
     # make a connection with the objects of currently logged in user
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     id_user = models.IntegerField()
-    profile_img = models.ImageField(upload_to="student profile img", default="../static/images/profile-white.jpg")
+    profile_img = models.ImageField(upload_to="student profile img", default="def_profile.jpeg")
     date_of_birth = models.DateField(null=True)
     gender = models.CharField(max_length=100, null=True, choices=gender_field)
     phone_number = models.CharField(max_length=15, null=True)
@@ -87,14 +87,14 @@ class CollegeProfile(models.Model):
     college = models.OneToOneField(User, on_delete=models.CASCADE)
     id_user = models.IntegerField()
     college_name = models.CharField(max_length=200, blank=True)
-    college_profile_img = models.ImageField(upload_to="college profile img", default="../static/images/profile-white.jpg")
+    college_profile_img = models.ImageField(upload_to="college profile img", default="def_profile.jpeg")
     established_date = models.DateField(null=True)
     phone_number = models.CharField(null=True, max_length=15)
     address = models.CharField(max_length=100, null=True)
     college_location = models.ForeignKey(CollegeLocation, on_delete=models.CASCADE, blank=True, null=True)
     websites = models.URLField(null=True, max_length=200)
     type = models.CharField(null=True, choices=college_type, max_length=20)
-    college_cover = models.ImageField(upload_to="college profle cover", default="../static/images/profile-white.jpg")
+    college_cover = models.ImageField(upload_to="college profle cover", default="def_profile.jpeg")
     about = RichTextField(default="")
     
     class Meta:
@@ -128,7 +128,7 @@ class StudentInfo(models.Model):
     education_level = models.CharField(max_length=30, choices=education_field, null=True)
     passed_year = models.DateField(null=True)
     gpa = models.CharField(max_length=10, choices=grade_field, null=True)
-    grade = models.DecimalField(max_digits=4, decimal_places=2, null=True)
+    grade = models.CharField(max_length=10, default="")
     
     class Meta:
         db_table = 'Student Info'

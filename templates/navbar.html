@@ -9,24 +9,18 @@
 
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="{% url 'home' %}" class="active">Home</a></li>
-          <li class="dropdown"><a href="#"><span>About</span></a>
-            <ul>
-              <li><a href="#">About Us</a></li>
-              <li><a href="#">Admissions</a></li>
-              <li><a href="#">Academics</a></li>
-            </ul>
-          </li>
+          <li><a href="{% url 'home' %}" class="{% if request.path == '/' %} active {% endif %}">Home</a></li>
+          <li class="#"><a href="#"><span>About Us</span></a>
           <li><a href="#">News</a></li>
           <li><a href="#">Events</a></li>
-          <li class="dropdown"><a href="#"><span>Colleges</span></a>
+          <li class="dropdown"><a href="#" class="{% if request.path == '/college/collegeNepal/' %} active {% elif request.path == '/college/collegeAbroad  /' %} active {% endif %}"><span>Colleges</span></a>
             <ul>
-              <li><a href="{% url 'collegeNepal' %}" class="fs-6"><i class="fa-solid fa-house fs-5"></i>Colleges in Nepal</a></li>
-              <li><a href="{% url 'collegeAbroad' %}" class="fs-6"><i class="fa-solid fa-globe fs-5"></i>&nbsp;Colleges in Abroad</a></li>
+              <li><a href="{% url 'collegeNepal' %}" class="fs-6">Colleges in Nepal</a></li>
+              <li><a href="{% url 'collegeAbroad' %}" class="fs-6">Colleges in Abroad</a></li>
             </ul>
           </li>
           
-          <li><a href="#">Contact</a></li>
+          <li><a href="#">Contact Us</a></li>
 
          {% if request.user.is_authenticated %}
             {% if request.user|has_group:'STUDENT' %}
@@ -36,7 +30,7 @@
                   <li><a href="{% url 'studentProfileSetting' %}">Profile Settings</a></li>
                   <li><a href="{% url 'educationLevel' user.id %}">Add Education Info</a></li>
                   <li><a href="{% url 'changePasswordStudent'%}">Change Password</a></li>
-                  <li ><a class="fs-5" href="{% url 'studentLogout' %}">Log Out</a></li>
+                  <li ><a href="{% url 'log-out' %}">Log Out</a></li>
                 </ul>
               </li>
               {% elif request.user|has_group:'COLLEGE' %}
@@ -46,8 +40,14 @@
                   <li><a href="{% url 'collegeProfileSetting' %}">Profile Settings</a></li>
                   <li><a href="{% url 'collegeInfo' %}">Add Courses</a></li>
                   <li><a href="{% url 'changePasswordCollege' %}">Change Password</a></li>
-                  <li ><a class="fs-5" href="{% url 'collegeLogout' %}">Log Out</a></li>
+                  <li ><a href="{% url 'log-out' %}">Log Out</a></li>
                 </ul>
+              </li>
+              {% else %}
+              <li class="dropdown"><a href="#"><span>Account</span></a>
+              <ul>
+                <li><a href="{% url 'log-out' %}">Log Out</a></li>
+              </ul>
               </li>
             {% endif %}
           {% else %}

@@ -1,22 +1,33 @@
-{% extends "auth.html" %}
+{% extends "base.html" %}
 
 {% block title %}
   Application Form
 {% endblock title %}
 
-{% block content %}
-<h1>Application Form</h1>
-<section>
-    <div class="container p-5">
-        <div class="row">
-            <form action="{% url 'submitApplication' %}?college_id={{college_id}}" method="post">
-                {% csrf_token %}
-            
-                {{form}}
-
-                <input type="submit">
-            </form>
-        </div>
+{% block contents %}
+<div class="container mt-2">
+    <div class="custom-box">
+        <h2 class="text-center mb-3">Application Form</h2>
+        {% if form.error %}
+          <div class="alert alert-danger">
+            {{ form.error }}
+          </div>
+        {% endif %}
+        <form action="{% url 'submitApplication' %}?college_id={{college_id}}" method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="contact" class="form-label fs-5">Your Contact Info:</label>
+                {{ form.contact }}
+            </div>
+            <div class="mb-3">
+                <label for="course" class="form-label fs-5">Choose a Course:</label>
+                {{ form.course }}
+            </div>
+            <div class="mb-3 d-flex justify-content-center mt-2">
+                <button type="submit" class="btn btn-lg btn-dark text-light rounded-3 fs-4 py-2 px-3">Submit Your Application</button>
+            </div>
+        </form>
     </div>
-</section>
-{% endblock content %}
+</div>
+{% endblock contents %}
+
