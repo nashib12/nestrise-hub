@@ -14,8 +14,6 @@ PYTHON
 # Framework Used
 DJANGO
 BOOTSTRAP 5
-TAILWIND CSS
-API
 
 # Setup Instructions
 1. Clone the repository
