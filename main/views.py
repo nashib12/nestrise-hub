@@ -71,12 +71,18 @@ def collegeNepal(request):
 @allowed_users(allowed_roles=["STUDENT"])
 def studentProfile(request, id):
     data = StudentProfile.objects.get(user_id=id)
-    return render(request,"main/student-profile.html",{"data":data})
+    education = StudentInfo.objects.filter(user_id = id)
+    
+    cont_dict = {
+        'data' : data,
+        'education' : education,
+    }
+    return render(request,"main/student-profile.html",cont_dict)
 
 @login_required(login_url="collegeLogin")
 @allowed_users(allowed_roles=["COLLEGE"])
 def collegeProfile(request, id):
-    data = CollegeProfile.objects.get(id_user=id)
+    data = CollegeProfile.objects.get(college_id=id)
     course = CollegeInfo.objects.filter(college_name_id = id)
     application = Application.objects.filter(college_name = id)
     
@@ -232,38 +238,43 @@ def change_password_student(request):
   
 @login_required(login_url="studentLogin")
 @allowed_users(allowed_roles=["STUDENT"])
-def educationLevel(request, id):
-    try:
-        student_data = StudentInfo.objects.get(user_id = id)
-        form = StudentInfoForm(instance=student_data)
-    except StudentInfo.DoesNotExist:
-        form = StudentInfoForm()
+def educationLevel(request):
+    user = User.objects.get(id=request.user.id)
+    form = StudentInfoForm(request.POST or None)
+    if form.is_valid():
+        data = form.save(commit=False)
+        data.user = request.user
+        data.save()
+        messages.success(request, "Your education info has been succesfully added!")
+        return redirect("studentProfile", id=user.id)
+
     context = {
         'form' : form
     }
 
-    return render(request, "./authentication/update-student-edu.html", context)
+    return render(request, "./authentication/add-education.html", context)
 
-@login_required(login_url="studentLogin")
-@allowed_users(allowed_roles=["STUDENT"])
-def updateEducationLevel(request, id):
-    try:
-        student_data = StudentInfo.objects.get(user_id = id)
-        if request.method == "POST":
-            form = StudentInfoForm(request.POST, instance=student_data)
-            if form.is_valid():
-                form.save()
-                messages.success(request, "Your education label has been succesfully updated!")
-                return redirect("studentProfile")
-    except StudentInfo.DoesNotExist:
-        if request.method == "POST":
-            form = StudentInfoForm(request.POST)
-            if form.is_valid():
-                data = form.save(commit=False)
-                data.user = request.user
-                data.save()
-                messages.success(request, "Your education label has been succesfully updated!")
-                return redirect("studentProfile")
+def updateEducation(request, id):
+    user = User.objects.get(id=request.user.id)
+    data = StudentInfo.objects.get(id=id)
+    form = StudentInfoForm(request.POST or None, instance=data)
+    if form.is_valid():
+        form.save()
+        messages.success(request, "Your education info has been succesfully updated!")
+        return redirect("studentProfile", id=user.id)
+    
+    return render(request, "authentication/update-student-edu.html", {"form" : form})
+
+def deleteEducation(request, id):
+    user = User.objects.get(id=request.user.id)
+    if not request.method == "POST":
+        messages.error(request, "Cannot delete the data.")
+        return redirect("studentProfile", id=user.id)
+    
+    data = StudentInfo.objects.get(id=id)
+    data.delete()
+    messages.success(request, "Education info delete successfull")
+    return redirect("studentProfile", id=user.id)
 
 # ---------------------- college registration and update section ----------------------
 # College registration
@@ -372,7 +383,7 @@ def updateCollegeProfile(request, id):
             if form.is_valid():
                 form.save()
                 messages.success(request, "Your information has been successfully updated")
-                return redirect("home")
+                return redirect("collegeProfile", id=request.user.id)
     except ValueError as e:
         handler = logging.FileHandler("./log/college_profile.log")
         formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
@@ -380,7 +391,7 @@ def updateCollegeProfile(request, id):
         logger.addHandler(handler)
         logger.error(str(e))
         messages.error(request, str(e))
-        return redirect("home")
+        return redirect("collegeProfile", id=request.user.id)
     
 #change the password for college
 @login_required(login_url="collegeLogin")
@@ -410,26 +421,19 @@ def change_password_college(request):
 @login_required(login_url="collegeLogin")
 @allowed_users(allowed_roles=["COLLEGE"])
 def collegeInfo(request):
-    form = CollegeInfoForm()
+    form = CollegeInfoForm(request.POST or None)
+    if form.is_valid():
+            data = form.save(commit=False)
+            data.college_name_id = request.user.id
+            data.save()
+            messages.success(request, "Successfully added")
+            return redirect("collegeProfile", id=request.user.id)
         
     context = {
         'form' : form
     }
     
     return render(request, "./authentication/update-college-info.html", context)
-
-#save college info and save to database
-@login_required(login_url="collegeLogin")
-@allowed_users(allowed_roles=["COLLEGE"])
-def updateCollegeInfo(request):
-        if request.method == "POST":
-            form = CollegeInfoForm(request.POST)
-            if form.is_valid():
-                data = form.save(commit=False)
-                data.college_name = request.user
-                data.save()
-                messages.success(request, "Successfully added")
-                return redirect("collegeProfile")
 
 class UpdateCollege(UpdateView):
     template_name = "./authentication/edit_college_info.html"

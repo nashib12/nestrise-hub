@@ -29,18 +29,23 @@
         <div class="row mb-5">
           <div class="col-lg-8 mx-auto">
             <div class="faculty-search">
-              <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search colloges by name or locations...">
-                <button class="search-btn rounded-2" type="button">
-                  <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
-              </div>
-              <div class="search-filters mt-3 d-flex flex-wrap">
-                <div class="filter-item"><a href="?location=">All</a></div>
-                {% for item in location %}
-                  <div class="filter-item"><a href="?location={{item.id}}">{{item.location}}</a></div>
-                {% endfor %}
-              </div>
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="Search colloges by name or locations...">
+                  <button class="search-btn rounded-2" type="button">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                  </button>
+                </div>
+                <div class="search-filters mt-3 d-flex flex-wrap">
+                  <div class="dropdown">
+                    <div class="btn btn-lg btn-secondary text-light fs-5 rounded-3 px-3" data-bs-toggle="dropdown">Filter by Location&nbsp;&nbsp;<i class="fa-solid fa-caret-down fs-4"></i></div>
+                    <ul class="dropdown-menu">
+                      <li class="dropdown-item"><a href="?location=">All</a></li>
+                      {% for item in location %}
+                        <li class="dropdown-item"> <a href="?location={{item.id}}">{{item.location}}</a></li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                </div>
             </div>
           </div>
         </div>

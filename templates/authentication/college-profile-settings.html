@@ -1,34 +1,85 @@
-{% extends "auth.html" %}
+{% extends "base.html" %}
 
 {% block title %}
   College Profile Setting
 {% endblock title %}
 
-{% block content %}
-<div class="text-center pt-5 pb-2">
-    <h1 class="text-decoration-underline">Update Your College Information</h1>
-</div>
-<section class="container-fluid pt-3 px-5 pb-5">
-    <div class="contaier">
-        <div class="row gap-4">
-            <div class="col-md-3 col-11 align-items-center justify-content-center d-flex flex-column align-items-center gap-4 border border-dark border-2 p-3 rounded-3">
-                <a href="{% url 'home' %}"><button class="btn btn-lg btn-warning rounded-3 border border-dark border-2"><i class="fa-solid fa-arrow-left"></i><span class="fs-4 text-bold">&nbsp;&nbsp;Go Back</span></button></a>
-                <img src="{{college_data.college_profile_img.url}}" alt="Profile Picture" class="img-fluid w-75 h-75 img-thumbnail rounded border border-dark border-2">
-            </div>
-            <div class="col-md-8 col-11">
-                <div class="row">
+{% block contents %}
+<main class="main">
+    
+    <!-- Page Title -->
+    <div class="page-title light-background">
+      <div class="container d-lg-flex justify-content-between align-items-center">
+        <h1 class="mb-2 mb-lg-0">Profile Settings</h1>
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li class="current">Add College Information</li>
+          </ol>
+        </nav>
+      </div>
+    </div><!-- End Page Title -->
+
+    <section class="profile--update section" id="profile--update">
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+            <div class="row">
+                <div class="custom-college-box">
+                    <h2 class="mt-2 mb-3 text-center fw-bold">College Profile Setting</h2>
                     <form action="{% url 'collegeProfileUpdate' user.id %}" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
-                        {{form.media}} <!-- This will include any css and js required for ckeditor or any widgets -->
-                        {{form.as_p}}
-                        <button type="submit" class="btn btn-lg btn-info">Submit</button>
-                    </form>
+                        {{ form.media }}
+                        <div class="mb-3">
+                            <label for="c_name" class="form-label fs-5">College Name</label>
+                            {{ form.college_name}}
+                        </div>
+                        <div class="mb-3">
+                            <label for="date" class="form-label fs-5">Established Date</label>
+                            {{ form.established_date}}
+                        </div>
+                        <div class="mb-3">
+                            <label for="profile" class="form-label fs-5">College Profile Picture</label>
+                            {{ form.college_profile_img }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone" class="form-label fs-5">Contact No.</label>
+                            {{ form.phone_number}}
+                        </div>
+                        <div class="mb-3">
+                            <label for="address" class="form-label fs-5">Full Address</label>
+                            {{ form.address}}
+                        </div>
+                        <div class="mb-3">
+                            <div class="row">
+                                <div class="col-7">
+                                    <label for="location" class="form-label fs-5">College Location</label>
+                                    {{ form.college_location }}
+                                </div>
+                                <div class="col-5">
+                                    <label for="type" class="form-label fs-5">College Type</label>
+                                    {{ form.type }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="website" class="form-label fs-5">College Website</label>
+                            {{ form.websites }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="cover" class="form-label fs-5">Cover Image</label>
+                            {{ form.college_cover }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="about" class="form-label fs-5">College Description</label>
+                            {{ form.about }}
+                        </div>
+                        <div class="d-flex justify-content-center mt-2">
+                            <button class="btn btn-lg btn-primary text-light rounded-2 fs-5 px-3 py-2" type="submit">Submit your Data</button>
+                        </div>
+                    </form>    
+                    
                 </div>
             </div>
         </div>
-    </div>
-</section>
-{% endblock content %}
-
-
-
+    </section>
+</main>
+{% endblock contents %}

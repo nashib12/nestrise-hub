@@ -127,7 +127,7 @@ class StudentInfo(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     education_level = models.CharField(max_length=30, choices=education_field, null=True)
     passed_year = models.DateField(null=True)
-    gpa = models.CharField(max_length=10, choices=grade_field, null=True)
+    gpa = models.DecimalField(decimal_places=2, null=True, default="", max_digits=5)
     grade = models.CharField(max_length=10, default="")
     
     class Meta:

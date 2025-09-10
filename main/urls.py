@@ -28,8 +28,9 @@ urlpatterns = [
     path("studentprofilesettings/",studentProfileSetting,name="studentProfileSetting"),
     path("studentprofileupdate/<int:id>/",updateStudentProfile,name="studentProfileUpdate"),
     path("change_password_college/", change_password_student, name="changePasswordStudent"),
-    path("eductaionLevel/<int:id>", educationLevel, name="educationLevel"),
-    path("updateEducationLevel/<int:id>/", updateEducationLevel, name="updateEducationLevel"),
+    path("eductaionLevel/", educationLevel, name="educationLevel"),
+    path("updateEducationLevel/<int:id>", updateEducation, name="updateEducation"),
+    path("deleteEducationLevel/<int:id>", deleteEducation, name="deleteEducation"),
     
     # ----------- college authentication section ----------- 
     path("collegeregistration/", collegeRegister, name="collegeRegister"),
@@ -37,8 +38,7 @@ urlpatterns = [
     path("collegeprofilesettings/",collegeProfileSetting,name="collegeProfileSetting"),
     path("collegeprofileupdate/<int:id>/",updateCollegeProfile,name="collegeProfileUpdate"),
     path("changepasswordcollege/", change_password_college, name="changePasswordCollege"),
-    path("collegeInfo/", collegeInfo, name="collegeInfo"),
-    path("updateCollegeInfo/", updateCollegeInfo, name="updateCollegeInfo"),
+    path("collegeInfo/", collegeInfo, name="collegeInfo"),  
     path("editCollegeInfo/<int:pk>", UpdateCollege.as_view(), name="editCollegeInfo"),
     path("deleteCollegeInfo/<int:pk>", DeleteCollege.as_view(), name="deleteCollegeInfo"),
 

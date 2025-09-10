@@ -52,28 +52,29 @@ class CollegeProfileForm(forms.ModelForm):
         model = CollegeProfile
         fields = ("college_name","established_date", "college_profile_img" , "phone_number", "address", "college_location", "websites", "type", "college_cover" ,"about")
         widgets = {
-            "college_name": forms.TextInput(attrs={'class':'form-control'}),
-            "established_date": forms.DateInput(attrs={'class':'form-control'}),
-            "college_profile_img" : forms.FileInput(attrs={'class':'form-control'}) , 
-            "phone_number" : forms.TextInput(attrs={'class':'form-control'}), 
-            "address" : forms.TextInput(attrs={'class':'form-control'}),
-            "college_location":forms.ChoiceField(), 
-            "websites" : forms.TextInput(attrs={'class':'form-control'}),
-            "type" : forms.RadioSelect(attrs={'class': 'form_control'}),
-            "college_cover" : forms.FileInput(attrs={'class':'form-control'}),
+            "college_name": forms.TextInput(attrs={'class':'form-control fs-5', 'id' : 'c_name'}),
+            "established_date": forms.DateInput(attrs={'class':'form-control fs-5', 'id' : 'date', 'type' : 'date'}),
+            "college_profile_img" : forms.FileInput(attrs={'class':'form-control fs-5', 'id' : 'profile'}) , 
+            "phone_number" : forms.TextInput(attrs={'class':'form-control fs-5', 'id' : 'phone'}), 
+            "address" : forms.TextInput(attrs={'class':'form-control fs-5', 'id' : 'address'}),
+            "college_location":forms.Select(attrs={'class' : 'form-control fs-5', 'id' : 'location'}), 
+            "websites" : forms.TextInput(attrs={'class':'form-control fs-5', 'id' : 'website'}),
+            "type" : forms.Select(attrs={'class': 'form-control fs-5', 'id' : 'type'}),
+            "college_cover" : forms.FileInput(attrs={'class':'form-control fs-5', 'id' : 'cover'}),
+            "about" : CKEditorWidget(),
             }     
         
         labels = {
-            "college_name" : "Enter college name",
-            "established_date" : "Enter established date", 
-            "college_profile_img" : "Choose a college profile image" , 
-            "phone_number" : "Enter contact info", 
-            "address" : "Enter full address", 
-            "college_location" : "Enter college location", 
-            "websites" : "Enter your website", 
-            "type" : "Choose college type", 
-            "college_cover" : "Choose a cover image" ,
-            "about" : "About"
+            "college_name" : "",
+            "established_date" : "", 
+            "college_profile_img" : "" , 
+            "phone_number" : "", 
+            "address" : "", 
+            "college_location" : "", 
+            "websites" : "", 
+            "type" : "", 
+            "college_cover" : "" ,
+            "about" : "",
         }   
 
 class CollegeRegistrationForm(forms.Form):
@@ -112,10 +113,10 @@ class CollegeInfoForm(forms.ModelForm):
         model = CollegeInfo
         fields = ("courses", "fee_structure", "requirements_for_enroll", "course_duration")
         widgets = {
-            "courses": forms.TextInput(attrs={'class':'form-control'}),
-            "fee_structure": forms.NumberInput(attrs={'class':'form-control'}),
-            "requriements_for_enroll": forms.TextInput(attrs={'class':'form-control'}),
-            "course_duration": forms.TextInput(attrs={'class':'form-control'})
+            "courses": forms.TextInput(attrs={'class':'form-control fs-5', 'id' : 'course'}),
+            "fee_structure": forms.NumberInput(attrs={'class':'form-control fs-5', 'id' : 'fee'}),
+            "requirements_for_enroll": forms.TextInput(attrs={'class':'form-control fs-5', 'id' : 'requirements'}),
+            "course_duration": forms.TextInput(attrs={'class':'form-control fs-5', 'id' : 'duration'})
         } 
 
 class VerbalTestForm(forms.Form):
